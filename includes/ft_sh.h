@@ -13,13 +13,15 @@ typedef struct      s_shell
     int     argc;
 }                   t_shell;
 
-typedef struct      s_tokenlist
+typedef struct      s_token
 {
-    char                type[3];
-    int                 len;
-    struct s_tokenlist  *next;
-    struct s_tokenlist  *last;
-    void                *content;
-}                       t_tokenlist;
+    char    *lexeme;
+    char    type[10];
+}                   t_token;
+
+typedef struct      s_token_list
+{
+    t_token     **token_list;
+}                   t_token_list;
 
 #endif
