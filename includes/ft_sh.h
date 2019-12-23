@@ -16,12 +16,14 @@ typedef struct      s_shell
 typedef struct      s_token
 {
     char    *lexeme;
-    char    type[10];
+    char    *type;
+    int     pos;
 }                   t_token;
 
 typedef struct      s_token_list
 {
     t_token     **token_list;
+    int         size;
 }                   t_token_list;
 
 #endif
