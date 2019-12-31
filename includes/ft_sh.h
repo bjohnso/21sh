@@ -15,9 +15,9 @@ typedef struct      s_shell
 
 typedef struct      s_token
 {
-    char    *lexeme;
-    char    *type;
-    int     pos;
+    char            *lexeme;
+    char            *type;
+    int             pos;
 }                   t_token;
 
 typedef struct      s_token_list
