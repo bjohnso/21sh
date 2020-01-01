@@ -2,7 +2,7 @@ NAME		:= minishell
 
 CC			:= gcc
 CFLAGS		+= -Wall -Wextra -Werror
-CFLAGS		+= -I includes -I libft/includes
+INCLUDES	+= -I includes -I libft/includes
 LDFLAGS		+= -L libft/ -lft
 
 LIBFT		:= libft/libft.a
@@ -10,8 +10,9 @@ LIBFT		:= libft/libft.a
 REGULAR		:= main
 CORE		:= parser
 
-FILES		:=	$(addprefix core/, $(CORE)) \
-				$(REGULAR)
+FILES		:=	$(REGULAR) \
+				$(addprefix core/, $(CORE))
+				
 
 SRC = $(addprefix src/, $(addsuffix .c, $(FILES)))
 OBJ = $(SRC:.c=.o)
@@ -24,10 +25,10 @@ $(LIBFT):
 	@make -C libft
 
 $(OBJ): %.o: %.c
-	@$(CC) -c $(CFLAGS) $< -o $@
+	@$(CC) -c $(INCLUDES) $(CFLAGS) $< -o $@
 
-$(NAME): $(LIBFT) $(OBJ)
-	@$(CC) $(LDFLAGS) -o $@ $^
+$(NAME): $(OBJ) $(LIBFT)
+	@$(CC) $(INCLUDES) -o $(NAME) $(OBJ) $(LDFLAGS)
 	@echo "\033[32mCompiled Executable\033[0m"
 
 clean:

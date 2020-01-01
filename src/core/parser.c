@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "libft.h"
 #include "ft_sh.h"
 
 //Globals
@@ -43,7 +42,9 @@ char      *lexer(char *str){
         look++;
     }
 
-    return NULL;
+    lexeme = (char*)malloc(sizeof(char) * len);
+    ft_strncpy(lexeme, str, len);
+    return lexeme;
 }
 
 t_token_list    *parser(char *str){

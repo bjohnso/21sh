@@ -5,7 +5,6 @@
 
 typedef struct      s_shell
 {
-    bool    quit;
     char    **argv;
     char    **env;
     char    **localenv;
