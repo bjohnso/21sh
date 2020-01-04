@@ -25,33 +25,20 @@ char      *lexer(char *str){
 
     while (*look){
         if (*look == ' '){
-            //Allocate memory for lexeme
-            lexeme = (char*)malloc(sizeof(char) * len);
-            
-            //Set lookahead pointer to start of lexeme
-            look -= len;
-
-            //Copy Lexeme into return value for len characters
-            ft_strncpy(lexeme, look, len);
-
-            //Reset len to zero and increment cursor
-            len = 0;
-
-            break ;
-        } else {
-            len++;
+            cursor++;
+            break;
         }
+        else 
+            len++;
         cursor++;
         look++;
-
-        if (lexeme){
-            return lexeme;
-        }
     }
 
     if (len > 0){
+
         //Allocate memory for lexeme
         lexeme = (char*)malloc(sizeof(char) * len);
+        lexeme[len] = '\0';
             
         //Set lookahead pointer to start of lexeme
         look -= len;
@@ -59,7 +46,7 @@ char      *lexer(char *str){
         //Copy Lexeme into return value for len characters
         ft_strncpy(lexeme, look, len);
 
-        //Reset len to zero and increment cursor
+        //Reset len to zero
         len = 0;
 
         return lexeme;
@@ -73,25 +60,27 @@ t_token_list    *parser(char *str){
     input_len = ft_strlen(str);
 
     char            *lexeme;
-    t_token_list    *token_list = (t_token_list *)malloc(sizeof(t_token_list));
+    t_token_list    *token_list = new_token_list();
     int             pos = 0;
 
+    //Watch out for memeory leaks!!!
     while((lexeme = lexer(str))){
-        printf("LEXED\n");
-        ft_realloc(token_list->tokens, pos, pos+1);
-        printf("REALLOCED\n");
         t_token     *temp = generate_token(lexeme, pos);
+        ft_printf("New Lexeme : %s\n", lexeme);
         if (!temp){
+            free(temp);
             return NULL;
         }
 
-        token_list->tokens[pos] = temp;
+        token_list_push(token_list, temp);
+
+        ft_printf("New Token : %s\n", token_list->tokens[pos].lexeme);
         pos++;
     }
-    token_list->size = pos;
     
     return token_list;
 }
+
 t_token         *generate_token(char  *lexeme, int pos){
 
     //Check for Command
@@ -111,10 +100,8 @@ t_token         *generate_token(char  *lexeme, int pos){
     }
 }
 
-
 //Constructors
-
-t_token         *new_token(char  *lexeme, int pos, char *type){
+t_token         *new_token(char *lexeme, int pos, char *type){
     t_token     *token;
     
     token = (t_token *)malloc(sizeof(t_token));
@@ -123,4 +110,31 @@ t_token         *new_token(char  *lexeme, int pos, char *type){
     token->type = type;
 
     return token;
+}
+
+t_token_list    *new_token_list(){
+    t_token_list    *token_list;
+
+    token_list = (t_token_list *)malloc(sizeof(t_token_list));
+    token_list->tokens = (t_token *)malloc(sizeof(t_token));
+    token_list->size = 0;
+
+    return token_list;
+}
+
+//Mutators
+void            token_list_push(t_token_list *token_list, t_token *token){
+    
+    t_token     *new_token_array =  (t_token *)malloc(sizeof(t_token) * (token_list->size + 1));
+
+    for (int i = 0;  i <= token_list->size; i++){
+        new_token_array[i] = token_list->tokens[i];
+    }
+
+    new_token_array[token_list->size] = *token;
+
+    free(token_list->tokens);
+
+    token_list->tokens = new_token_array;
+    token_list->size += 1;
 }

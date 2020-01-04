@@ -21,8 +21,8 @@ typedef struct      s_token
 
 typedef struct      s_token_list
 {
-    t_token     *tokens[10];
-    int         size;
+    t_token         *tokens;
+    int             size;
 }                   t_token_list;
 
 //Parser
@@ -31,5 +31,7 @@ char                *lexer(char *str);
 t_token_list        *parser(char    *str);
 t_token             *generate_token(char  *lexeme, int pos);
 t_token             *new_token(char  *lexeme, int pos, char *type);
+t_token_list        *new_token_list();
+void                token_list_push(t_token_list *token_list, t_token *token);
 
 #endif
