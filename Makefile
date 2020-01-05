@@ -8,7 +8,7 @@ LDFLAGS		+= -L libft/ -lft
 LIBFT		:= libft/libft.a
 
 REGULAR		:= main
-CORE		:= parser
+CORE		:= parser token token_list shell input_reader buffer
 
 FILES		:=	$(REGULAR) \
 				$(addprefix core/, $(CORE))
