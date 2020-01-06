@@ -6,7 +6,7 @@
 char        *input_reader(){
 
     t_buffer    *buffer = new_buffer();
-    char    c;
+    char        c;
 
     while (1){
         c = ft_getchar();

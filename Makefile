@@ -8,10 +8,12 @@ LDFLAGS		+= -L libft/ -lft
 LIBFT		:= libft/libft.a
 
 REGULAR		:= main
-CORE		:= parser token token_list shell input_reader buffer
+MODULES		:= parser input_reader executor_manager
+ARTIFACTS	:= token token_list shell buffer agent
 
 FILES		:=	$(REGULAR) \
-				$(addprefix core/, $(CORE))
+				$(addprefix modules/, $(MODULES)) \
+				$(addprefix artifacts/, $(ARTIFACTS))
 				
 
 SRC = $(addprefix src/, $(addsuffix .c, $(FILES)))

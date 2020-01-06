@@ -47,7 +47,7 @@ char      *lexer(char *str){
     return NULL;
 }
 
-t_token_list    *parser(char *str){
+t_token_list    *parser(t_agent *approved_agent, char *str){
     //Set Global Input length
     input_len = ft_strlen(str);
     cursor = 0;
@@ -58,7 +58,7 @@ t_token_list    *parser(char *str){
 
     //Watch out for memeory leaks!!!
     while((lexeme = lexer(str))){
-        t_token     *temp = generate_token(lexeme, pos);
+        t_token     *temp = generate_token(approved_agent, lexeme, pos);
         if (!temp){
             free(temp);
             return NULL;

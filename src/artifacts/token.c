@@ -3,16 +3,6 @@
 #include <unistd.h>
 #include "ft_sh.h" 
 
-//Globals
-static const char   *keywords[6] = {
-    "ls",
-    "cat",
-    "cd",
-    "exit",
-    "mv",
-    "echo"
-};
-
 //Constructors
 t_token         *new_token(char *lexeme, int pos, char *type){
     t_token     *token;
@@ -26,12 +16,12 @@ t_token         *new_token(char *lexeme, int pos, char *type){
 }
 
 //Auxillary Functions
-t_token         *generate_token(char  *lexeme, int pos){
+t_token         *generate_token(t_agent *approved_agent, char  *lexeme, int pos){
 
     //Check for Command
     if (pos == 0){
         for (size_t i  = 0; i < 6; i++){
-            if (ft_strcmp(lexeme, keywords[i]) == 0){
+            if ((approved_agent = new_agent(lexeme))){
                 return new_token(lexeme, pos, "command");
             }
         }
