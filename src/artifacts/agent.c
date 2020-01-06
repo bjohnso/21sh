@@ -57,10 +57,10 @@ void                agent_options_push(t_agent *agent, char option){
         agent->options[0] = option;
         agent->options[1] = '\0';
     } else {
-        int     len = ft_strlen(agent->options);
-        char    *temp = (char *)malloc(sizeof(char) * len + 2);
+        size_t  len = ft_strlen(agent->options);
+        char    *temp = (char *)malloc(sizeof(char) * (len + 2));
 
-        for (int i = 0; len < i; i++){
+        for (size_t i = 0; i < len; i++){
             temp[i] = agent->options[i];
         }
 
@@ -80,10 +80,10 @@ void                agent_files_push(t_agent *agent, char *file){
         agent->files[0] = file;
         agent->files[1] = NULL;
     } else {
-        int     len = ft_sstrlen(agent->files);
-        char    **temp = (char **)malloc(sizeof(char *) * len + 2);
+        size_t  len = ft_sstrlen(agent->files);
+        char    **temp = (char **)malloc(sizeof(char *) * (len + 2));
 
-        for (int i = 0; len < i; i++){
+        for (size_t i = 0; i < len; i++){
             temp[i] = agent->files[i];
         }
 
