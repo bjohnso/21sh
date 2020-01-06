@@ -44,9 +44,6 @@ void            token_list_destroy(t_token_list *token_list){
         }
 
         if (token_list->agent->files){
-            for (size_t i = 0; i < ft_sstrlen(token_list->agent->files); i++){
-                free(token_list->agent->files[i]);
-            }
             free(token_list->agent->files);
         }
         free(token_list->agent);
