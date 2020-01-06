@@ -64,8 +64,13 @@ t_token_list    *parser(char *str){
             return NULL;
         }
 
-        if (pos == 0 && (agent = new_agent(temp->lexeme))){
-            token_list->agent = agent;
+        if (pos == 0){
+            if ((agent = new_agent(temp->lexeme))){
+                token_list->agent = agent;
+            } else {
+                free(temp);
+                return NULL;
+            }
         }
 
         token_list_push(token_list, temp);
