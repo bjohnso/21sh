@@ -30,3 +30,27 @@ void            token_list_push(t_token_list *token_list, t_token *token){
     token_list->tokens = new_token_array;
     token_list->size += 1;
 }
+
+void            token_list_destroy(t_token_list *token_list){
+
+    for (int i = 0; i < token_list->size; i++){
+        free(token_list->tokens[i].lexeme);
+    }
+    free(token_list->tokens);
+
+    if (token_list->agent){
+        if (token_list->agent->options){
+            free(token_list->agent->options);
+        }
+
+        if (token_list->agent->files){
+            for (size_t i = 0; i < ft_sstrlen(token_list->agent->files); i++){
+                free(token_list->agent->files[i]);
+            }
+            free(token_list->agent->files);
+        }
+        free(token_list->agent);
+    }
+    free(token_list);
+    token_list = NULL;
+}

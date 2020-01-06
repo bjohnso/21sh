@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include "ft_sh.h"
 
-void        compute_execute(t_agent *approved_agent, t_token_list *token_list){
+void    compute_execute(t_agent *approved_agent, t_token_list *token_list){
 
     //The following comparison's first validate the approved agent master variable as NOT NULL, then checksum it's alias against the first token->lexeme in the token_list
     if (approved_agent){

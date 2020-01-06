@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include "ft_sh.h" 
 
-static const char   *aliases[6] = {
+static char   *aliases[6] = {
     "ls",
     "cat",
     "cd",
@@ -12,7 +12,7 @@ static const char   *aliases[6] = {
     "echo"
 };
 
-static const char   *targets[6] = {
+static char   *targets[6] = {
     "/bin/ls",
     "/bin/cat",
     "/bin/cd",
@@ -34,10 +34,13 @@ t_agent             *new_agent(char *alias){
         return NULL;
     }
 
+    agent->options = NULL;
+    agent->files = NULL;
+
     return agent;
 }
 
-const char          *agent_map_target(char *alias){
+char          *agent_map_target(char *alias){
     for (size_t i = 0; i < ft_sstrlen((char **)aliases); i++){
         if (ft_strcmp(aliases[i], alias) == 0){
             return targets[i];
@@ -91,4 +94,12 @@ void                agent_files_push(t_agent *agent, char *file){
 
         agent->files = temp;
     }
+}
+
+void                agent_clone(t_agent *clone, t_agent *agent){
+    clone->alias = agent->alias;
+    clone->target = agent->target;
+    clone->options = agent->options;
+    clone->files = agent->files;
+    clone->execution_status = agent->execution_status;
 }

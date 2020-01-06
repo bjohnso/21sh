@@ -16,17 +16,13 @@ t_token         *new_token(char *lexeme, int pos, char *type){
 }
 
 //Auxillary Functions
-t_token         *generate_token(t_agent *approved_agent, char  *lexeme, int pos){
+t_token         *generate_token(char  *lexeme, int pos){
 
     //Check for Command
     if (pos == 0){
-        for (size_t i  = 0; i < 6; i++){
-            if ((approved_agent = new_agent(lexeme))){
-                return new_token(lexeme, pos, "command");
-            }
-        }
-        return ((void *)0);
-    } else {
+        return new_token(lexeme, pos, "command");
+    }
+    else {
         if (*lexeme == '-'){
             return new_token(lexeme, pos, "option");
         } else {
