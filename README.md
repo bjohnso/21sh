@@ -1,3 +1,3 @@
 # Minishell
 
-A Simple Unix Based Shell featuring Several builtins, written in C
+A Simple but robust Unix Based Shell featuring Several builtins, written in C
