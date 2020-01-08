@@ -18,19 +18,21 @@ int     main(int argc, char **argv){
                 //TODO: Allow Parser to return error codes
                 //REQUEST A t_token_list * from the PARSER
                 if ((token_list = parser(user_input))){
-                    for (int i = 0; i < token_list->size; i++){
-                        ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i].lexeme, token_list->tokens[i].type);
-                    }
                     //REQUEST A t_agent * BE BRIEFED FOR DISPATCH BY AGENCY
                     if (token_list->agent){ 
                         
                         compute_execute(token_list->agent, token_list);
-                        
-                        /*if (execute(token_list->agent) == -1){
+
+                        if (execute(token_list->agent) == -1){
                             ft_printf("Execution Error... Executor Manager Failed to Dispatch...\n");
-                        }*/
+                        }
                         
-                        ft_printf("Agent Dispatched...\n");
+                        ft_printf("\n\n----------EXECUTION REPORT----------\n\n");
+
+                        for (int i = 0; i < token_list->size; i++){
+                            ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i].lexeme, token_list->tokens[i].type);
+                        }
+
                         ft_printf("Agent Alias : %s\n", token_list->agent->alias);
                         ft_printf("Agent Target : %s\n", token_list->agent->target);
                         
@@ -52,6 +54,9 @@ int     main(int argc, char **argv){
 
                         ft_printf("Agent Execution Status : %s\n", token_list->agent->execution_status ? "true" : "false");
                     } else {
+                        for (int i = 0; i < token_list->size; i++){
+                            ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i].lexeme, token_list->tokens[i].type);
+                        }
                         ft_printf("Syntax Error... Agenency Failed to Dispatch an Agent\n");
                     }
                     token_list_destroy(token_list);

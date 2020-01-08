@@ -122,7 +122,6 @@ void                agent_generate_exec_args(t_agent *agent){
 
     for(size_t j = i; j < len; j++){
         exec_args[j] = agent->files[j - i];
-        ft_printf("%s\n",exec_args[j]);
     }
 
     exec_args[len] = NULL;
