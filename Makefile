@@ -7,12 +7,11 @@ LDFLAGS		+= -L libft/ -lft
 
 LIBFT		:= libft/libft.a
 
-REGULAR		:= main
-MODULES		:= parser input_reader executor_manager
+
+MODULES		:= shell parser input_reader agency executor_manager
 ARTIFACTS	:= token token_list shell buffer agent
 
-FILES		:=	$(REGULAR) \
-				$(addprefix modules/, $(MODULES)) \
+FILES		:=	$(addprefix modules/, $(MODULES)) \
 				$(addprefix artifacts/, $(ARTIFACTS))
 				
 

@@ -15,6 +15,7 @@ typedef struct      s_agent
     char            *target;
     char            *options;
     char            **files;
+    char            **exec_args;
     bool            execution_status;
 }                   t_agent;
 
@@ -59,7 +60,7 @@ char                *input_reader();
 t_buffer            *new_buffer();
 void                buffer_push(t_buffer *buffer, char c);
 
-//Executor Manager
+//Agency
 void                compute_execute(t_agent *approved_agent, t_token_list *token_list);
 
 //Agent
@@ -67,6 +68,10 @@ t_agent             *new_agent(char *alias);
 char                *agent_map_target(char *alias);
 void                agent_options_push(t_agent *agent, char option);
 void                agent_files_push(t_agent *agent, char *file);
+void                agent_generate_exec_args(t_agent *agent);
 void                agent_clone(t_agent *clone, t_agent *agent);
+
+//Executor Manager
+int                 execute(t_agent *agent);
 
 #endif

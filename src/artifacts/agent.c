@@ -96,6 +96,39 @@ void                agent_files_push(t_agent *agent, char *file){
     }
 }
 
+void                agent_generate_exec_args(t_agent *agent){
+
+    //POSIBLY ADD '-' to options
+    char        **exec_args;
+    size_t      len;
+    size_t      i;
+
+    if (agent->files)
+        len = ft_sstrlen(agent->files);
+    else
+        len = 0;
+    if (agent->options)
+         i = 2;
+    else
+        i = 1; 
+
+    len += i;
+    exec_args = (char **)malloc(sizeof(char *) * (len + 1));
+
+    exec_args[0] = agent->alias;
+
+    if (i == 2)
+        exec_args[1] = agent->options;
+
+    for(size_t j = i; j < len; j++){
+        exec_args[j] = agent->files[j - i];
+        ft_printf("%s\n",exec_args[j]);
+    }
+
+    exec_args[len] = NULL;
+    agent->exec_args = exec_args;
+}
+
 void                agent_clone(t_agent *clone, t_agent *agent){
     clone->alias = agent->alias;
     clone->target = agent->target;
