@@ -30,3 +30,9 @@ int     mini_cd(t_shell *shell, t_agent *agent){
         return chdir(shell->home_dir);
     }
 }
+
+void    mini_env(char **env){
+    for (size_t i = 0; i < ft_sstrlen(env); i++){
+        ft_printf("%s\n", env[i]);
+    }
+}

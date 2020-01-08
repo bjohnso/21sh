@@ -79,5 +79,6 @@ int                 execute(t_shell *shell, t_agent *agent);
 //Shell-Builtins
 void                mini_echo(t_agent *agent);
 int                 mini_cd(t_shell *shell, t_agent *agent);
+void                mini_env(char **env);
 
 #endif

@@ -20,12 +20,10 @@ int         execute(t_shell *shell, t_agent *agent){
             wpid = wait(0);
             if (status != -1)
                 agent->execution_status = true;
-            return status;
         }
     } else {
         if (ft_strcmp(agent->alias, "echo") == 0){
             mini_echo(agent);
-            return status;
         }
         else if (ft_strcmp(agent->alias, "cd") == 0){
             status =  mini_cd(shell, agent);
@@ -34,8 +32,11 @@ int         execute(t_shell *shell, t_agent *agent){
                 free(shell->dir);
                 shell->dir = getcwd(NULL, 0);
             }
-            return status;
         }
+        else if (ft_strcmp(agent->alias, "env") == 0){
+            mini_env(environ);
+        }
+        return status;
     }
     return -1;
 }
