@@ -23,11 +23,13 @@ int     main(int argc, char **argv){
                         
                         compute_execute(token_list->agent, token_list);
 
-                        if (execute(token_list->agent) == -1){
+                        if (execute(shell, token_list->agent) == -1){
                             ft_printf("Execution Error... Executor Manager Failed to Dispatch...\n");
                         }
                         
                         ft_printf("\n\n----------EXECUTION REPORT----------\n\n");
+
+                        ft_printf("Current Directory : %s\n", shell->dir);
 
                         for (int i = 0; i < token_list->size; i++){
                             ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i].lexeme, token_list->tokens[i].type);

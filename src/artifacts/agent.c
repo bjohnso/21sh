@@ -3,22 +3,30 @@
 #include <unistd.h>
 #include "ft_sh.h" 
 
-static char   *aliases[6] = {
+static char   *aliases[10] = {
     "ls",
     "cat",
-    "cd",
-    "exit",
     "mv",
-    "echo"
+    "mkdir",
+    "echo",
+    "cd",
+    "setenv",
+    "unsetenv",
+    "env",
+    "exit"
 };
 
-static char   *targets[6] = {
+static char   *targets[10] = {
     "/bin/ls",
     "/bin/cat",
-    "/bin/cd",
-    "/bin/exit",
     "/bin/mv",
-    "/bin/echo"
+    "/bin/mkdir",
+    "echo",
+    "cd",
+    "setenv",
+    "unsetenv",
+    "env",
+    "exit"
 };
 
 t_agent             *new_agent(char *alias){

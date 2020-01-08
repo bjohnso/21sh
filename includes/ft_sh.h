@@ -6,6 +6,8 @@
 //Artifacts
 typedef struct      s_shell
 {
+    char            *dir;
+    char            *home_dir;
     bool            exit;
 }                   t_shell;
 
@@ -72,6 +74,10 @@ void                agent_generate_exec_args(t_agent *agent);
 void                agent_clone(t_agent *clone, t_agent *agent);
 
 //Executor Manager
-int                 execute(t_agent *agent);
+int                 execute(t_shell *shell, t_agent *agent);
+
+//Shell-Builtins
+void                mini_echo(t_agent *agent);
+int                 mini_cd(t_shell *shell, t_agent *agent);
 
 #endif
