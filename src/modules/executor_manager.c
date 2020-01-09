@@ -45,6 +45,9 @@ int         execute(t_shell *shell, t_agent *agent){
             if (mini_unsetenv(shell, agent) != -1){
                 agent->execution_status = true;
             }
+        } else if (ft_strcmp(agent->alias, "exit") == 0){
+            shell->exit = true;
+            agent->execution_status = true;
         }
         return status;
     }
