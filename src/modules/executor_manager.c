@@ -3,8 +3,6 @@
 #include <unistd.h>
 #include "ft_sh.h"
 
-extern char **environ;
-
 int         execute(t_shell *shell, t_agent *agent){
 
     pid_t   pid, wpid;
@@ -13,13 +11,14 @@ int         execute(t_shell *shell, t_agent *agent){
     if (agent->target[0] == '/'){
         pid = fork();
         if (pid == 0){
-            execve(agent->target, agent->exec_args, environ);
+            execve(agent->target, agent->exec_args, shell->environ);
             status = -1;
             exit(0);
         } else {
             wpid = wait(0);
             if (status != -1)
                 agent->execution_status = true;
+            return status;
         }
     } else {
         if (ft_strcmp(agent->alias, "echo") == 0){
@@ -34,7 +33,18 @@ int         execute(t_shell *shell, t_agent *agent){
             }
         }
         else if (ft_strcmp(agent->alias, "env") == 0){
-            mini_env(environ);
+            mini_env(shell);
+            agent->execution_status = true;
+        } 
+        else if (ft_strcmp(agent->alias, "setenv") == 0){
+            if (mini_setenv(shell, agent) != -1){
+                agent->execution_status = true;
+            }
+        }
+        else if (ft_strcmp(agent->alias, "unsetenv") == 0){
+            if (mini_unsetenv(shell, agent) != -1){
+                agent->execution_status = true;
+            }
         }
         return status;
     }

@@ -6,6 +6,7 @@
 //Artifacts
 typedef struct      s_shell
 {
+    char            **environ;
     char            *dir;
     char            *home_dir;
     bool            exit;
@@ -44,6 +45,14 @@ typedef struct      s_buffer
 //Shell
 t_shell             *new_shell();
 
+//Environ
+char                **environ_init(char **env);
+void                environ_push(t_shell *shell, char *pair);
+int                 environ_search(char **env, char *pair, int split);
+void                environ_replace(t_shell *shell, char *pair, int position);
+void                environ_delete(t_shell *shell, int position);
+char                *environ_pair_clone(char *original);
+
 //Parser
 char                *lexer(char *str);
 t_token_list        *parser(char *str);
@@ -79,6 +88,8 @@ int                 execute(t_shell *shell, t_agent *agent);
 //Shell-Builtins
 void                mini_echo(t_agent *agent);
 int                 mini_cd(t_shell *shell, t_agent *agent);
-void                mini_env(char **env);
+void                mini_env(t_shell *shell);
+int                 mini_setenv(t_shell *shell, t_agent *agent);
+int                 mini_unsetenv(t_shell *shell, t_agent *agent);
 
 #endif

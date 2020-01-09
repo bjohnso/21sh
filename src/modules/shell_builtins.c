@@ -31,8 +31,49 @@ int     mini_cd(t_shell *shell, t_agent *agent){
     }
 }
 
-void    mini_env(char **env){
-    for (size_t i = 0; i < ft_sstrlen(env); i++){
-        ft_printf("%s\n", env[i]);
+void    mini_env(t_shell *shell){
+    for (size_t i = 0; i < ft_sstrlen(shell->environ); i++){
+        ft_printf("%s\n", shell->environ[i]);
     }
+}
+
+int    mini_setenv(t_shell *shell, t_agent *agent){
+    if (agent->files){
+        for (size_t i = 0; i < ft_sstrlen(agent->files); i++){
+            int split = 0;
+            for (size_t j = 0; j < ft_strlen(agent->files[i]); j++){
+                if (agent->files[i][j] == '='){
+                    split = j;
+                    break ;
+                }
+            }
+            //IF ARG HAS AN EQUALS AND THE 
+            if (split !=0){
+                int pos;
+                if ((pos = environ_search(shell->environ, agent->files[i], split)) != -1){
+                    environ_replace(shell, agent->files[i], pos);
+                } else {
+                    environ_push(shell, agent->files[i]);
+                }
+            } else {
+                return -1;
+            }
+        }
+    }
+    return 1;
+}
+
+int    mini_unsetenv(t_shell *shell, t_agent *agent){
+    if (agent->files){
+        for (size_t i = 0; i < ft_sstrlen(agent->files); i++){
+            int pos;
+            if ((pos = environ_search(shell->environ, agent->files[i], ft_strlen(agent->files[i]))) != -1){
+                environ_delete(shell, pos);
+            } else {
+                ft_printf("ENVIRON SEARCH RETURN %d\n", pos);
+                return -1;
+            }
+        }
+    }
+    return 1;
 }

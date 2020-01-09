@@ -11,7 +11,6 @@ int     main(int argc, char **argv){
 
     if (argc > 0 && argv[0]){
         while (!shell->exit){
-            
             ft_printf("%s $> ", argv[0]);
             //REQUEST INPUT FROM THE INPUT READER
             if ((user_input = input_reader())){
@@ -27,7 +26,7 @@ int     main(int argc, char **argv){
                             ft_printf("Execution Error... Executor Manager Failed to Dispatch...\n");
                         }
                         
-                        ft_printf("\n\n----------EXECUTION REPORT----------\n\n");
+                        ft_printf("%s","\n\n----------EXECUTION REPORT----------\n\n");
 
                         ft_printf("Current Directory : %s\n", shell->dir);
 
@@ -65,6 +64,7 @@ int     main(int argc, char **argv){
                 } else {
                     ft_printf("Syntax Error\n");
                 }
+                ft_printf("%s", "\n\n");
             }
         }
     }
