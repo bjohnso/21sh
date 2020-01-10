@@ -47,7 +47,7 @@ char      *lexer(char *str){
     return NULL;
 }
 
-t_token_list    *parser(char *str){
+t_token_list    *parser(char **env, char *str){
     //Set Global Input length
     input_len = ft_strlen(str);
     cursor = 0;
@@ -65,7 +65,7 @@ t_token_list    *parser(char *str){
         }
 
         if (pos == 0){
-            if ((agent = new_agent(temp->lexeme))){
+            if ((agent = new_agent(env, temp->lexeme))){
                 token_list->agent = agent;
             } else {
                 free(temp);

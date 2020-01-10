@@ -3,11 +3,7 @@
 #include <unistd.h>
 #include "ft_sh.h" 
 
-static char   *aliases[10] = {
-    "ls",
-    "cat",
-    "mv",
-    "mkdir",
+static char   *aliases[6] = {
     "echo",
     "cd",
     "setenv",
@@ -16,24 +12,11 @@ static char   *aliases[10] = {
     "exit"
 };
 
-static char   *targets[10] = {
-    "/bin/ls",
-    "/bin/cat",
-    "/bin/mv",
-    "/bin/mkdir",
-    "echo",
-    "cd",
-    "setenv",
-    "unsetenv",
-    "env",
-    "exit"
-};
-
-t_agent             *new_agent(char *alias){
+t_agent             *new_agent(char **env, char *alias){
     t_agent     *agent = (t_agent *)malloc(sizeof(t_agent));
 
     agent->alias = alias;
-    if ((agent->target = agent_map_target(agent->alias)))
+    if ((agent->target = agent_map_target(env, agent->alias)))
     {
         agent->execution_status = false;
     }
@@ -48,13 +31,50 @@ t_agent             *new_agent(char *alias){
     return agent;
 }
 
-char          *agent_map_target(char *alias){
+char                *agent_map_target(char **env, char *alias){
     for (size_t i = 0; i < ft_sstrlen((char **)aliases); i++){
         if (ft_strcmp(aliases[i], alias) == 0){
-            return targets[i];
+            return "builtin";
         }
     }
 
+    int pos;
+    if ((pos = environ_search(env, "PATH", 4)) != -1){
+        char    **paths = ft_strsplit(env[pos] + 5, ':');
+        if (paths){
+            for (size_t i = 0; i < ft_sstrlen(paths); i++){
+                size_t  path_len = ft_strlen(paths[i]);
+                size_t  len = path_len + ft_strlen(alias);
+                char    *file;
+
+                if (paths[i][path_len - 1] != '/')
+                    len++;
+                file = (char *)malloc(sizeof(char) * (len + 1));
+
+                for (size_t j = 0; j < len; j++){
+                    if (j < path_len){
+                        file[j] = paths[i][j];
+                    } else {
+                        //INSERT A '/' BETWEEN PATH AND ALIAS
+                        if (paths[i][path_len - 1] != '/' && j == path_len){
+                            file[j] = '/';
+                        } 
+                        //INSERT AS NORMAL
+                        else {
+                            file[j] = alias[j - path_len - 1];
+                        }
+                    } 
+                }
+                file[len] = '\0';
+                //CHECK FILES EXISTANCE IN SPECIFIED PATH
+                if (access(file, F_OK) == 0){
+                    return file;
+                } else {
+                    free(file);
+                }
+            }
+        }
+    }
     return NULL;
 }
 
@@ -105,7 +125,6 @@ void                agent_files_push(t_agent *agent, char *file){
 }
 
 void                agent_generate_exec_args(t_agent *agent){
-
     //POSIBLY ADD '-' to options
     char        **exec_args;
     size_t      len;

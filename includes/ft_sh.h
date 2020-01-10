@@ -55,7 +55,7 @@ char                *environ_pair_clone(char *original);
 
 //Parser
 char                *lexer(char *str);
-t_token_list        *parser(char *str);
+t_token_list        *parser(char **env, char *str);
 
 //Token
 t_token             *generate_token(char  *lexeme, int pos);
@@ -75,8 +75,8 @@ void                buffer_push(t_buffer *buffer, char c);
 void                compute_execute(t_agent *approved_agent, t_token_list *token_list);
 
 //Agent
-t_agent             *new_agent(char *alias);
-char                *agent_map_target(char *alias);
+t_agent             *new_agent(char **env, char *alias);
+char                *agent_map_target(char **env, char *alias);
 void                agent_options_push(t_agent *agent, char option);
 void                agent_files_push(t_agent *agent, char *file);
 void                agent_generate_exec_args(t_agent *agent);
