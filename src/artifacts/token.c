@@ -18,8 +18,18 @@ t_token         *new_token(char *lexeme, int pos, char *type){
 //Auxillary Functions
 t_token         *generate_token(char  *lexeme, int pos){
 
+    
+
     //Check for Command
     if (pos == 0){
+        if (lexeme[0] != '/'){
+            size_t len = ft_strlen(lexeme);
+            for (size_t i = 1; i < len; i++){
+                if(lexeme[i] == '/'){
+                    return new_token(lexeme, pos, "file");
+                }
+            }
+        }
         return new_token(lexeme, pos, "command");
     }
     else {

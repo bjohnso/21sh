@@ -12,12 +12,18 @@ char      *lexer(char *str){
     char    *look = str;  
     char    *lexeme = NULL;
     int     len = 0;
+    int     padding = 0;
 
     look += cursor;
 
     while (*look){
-        if (*look == ' '){
-            cursor++;
+        if (*look == ' ' || *look == '\t'){
+            while(*look == ' ' || *look == 9){
+                ft_printf("TAB");
+                cursor++;
+                look++;
+                padding++;
+            }
             break;
         }
         else 
@@ -33,7 +39,7 @@ char      *lexer(char *str){
         lexeme[len] = '\0';
             
         //Set lookahead pointer to start of lexeme
-        look -= len;
+        look = look - len - padding;
 
         //Copy Lexeme into return value for len characters
         ft_strncpy(lexeme, look, len);
@@ -41,13 +47,15 @@ char      *lexer(char *str){
         //Reset len to zero
         len = 0;
 
+        ft_printf("LEX: %s\n", lexeme);
+
         return lexeme;
     }
 
     return NULL;
 }
 
-t_token_list    *parser(char **env, char *str){
+t_token_list    *parser(t_shell *shell, char *str){
     //Set Global Input length
     input_len = ft_strlen(str);
     cursor = 0;
@@ -57,25 +65,29 @@ t_token_list    *parser(char **env, char *str){
     int             pos = 0;
 
     //Watch out for memeory leaks!!!
-    while((lexeme = lexer(str))){
-        t_token     *temp = generate_token(lexeme, pos);
-        if (!temp){
-            free(temp);
-            return NULL;
-        }
-
-        if (pos == 0){
-            if ((agent = new_agent(env, temp->lexeme))){
-                token_list->agent = agent;
-            } else {
+    while(cursor < input_len){
+        if ((lexeme = lexer(str))){
+            t_token     *temp = generate_token(lexeme, pos);
+            if (!temp){
                 free(temp);
                 return NULL;
             }
-        }
 
-        token_list_push(token_list, temp);
-        pos++;
+            if (pos == 0){
+                if ((agent = new_agent(shell, temp))){
+                    token_list->agent = agent;
+                } else {
+                    free(temp);
+                    return NULL;
+                }
+            }
+
+            token_list_push(token_list, temp);
+            pos++;
+        }
     }
 
-    return token_list;
+    if (token_list->size > 0)
+        return token_list;
+    return NULL;
 }

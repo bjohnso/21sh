@@ -1,11 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include "ft_sh.h"
 
 int         execute(t_shell *shell, t_agent *agent){
 
-    pid_t   pid, wpid;
+    pid_t   pid;
     int     status = 0;
 
     if (agent->target[0] == '/'){
@@ -15,7 +17,7 @@ int         execute(t_shell *shell, t_agent *agent){
             status = -1;
             exit(0);
         } else {
-            wpid = wait(0);
+            wait(0);
             if (status != -1)
                 agent->execution_status = true;
             return status;

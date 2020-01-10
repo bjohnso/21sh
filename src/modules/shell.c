@@ -19,16 +19,17 @@ int     main(int argc, char **argv){
             if ((user_input = input_reader())){
                 //TODO: Allow Parser to return error codes
                 //REQUEST A t_token_list * from the PARSER
-                if ((token_list = parser(shell->environ, user_input))){
+                if ((token_list = parser(shell, user_input))){
                     //REQUEST A t_agent * BE BRIEFED FOR DISPATCH BY AGENCY
-                    if (token_list->agent){ 
-                        
-                        compute_execute(token_list->agent, token_list);
-
-                        if (execute(shell, token_list->agent) == -1){
-                            ft_printf("Execution Error... Executor Manager Failed to Dispatch...\n");
+                    if (token_list->agent){
+                        if (token_list->agent->command_status){
+                            compute_execute(token_list);
+                            if (execute(shell, token_list->agent) == -1){
+                                ft_printf("Execution Error... Executor Manager Failed to Dispatch...\n");
+                            }
+                        } else {
+                            ft_printf("%s is a directory\n", token_list->agent->alias);
                         }
-                        
                         if (argv[1] && ft_strcmp(argv[1], "-e") == 0){
 
                             ft_printf("%s","\n\n----------EXECUTION REPORT----------\n\n");
@@ -57,7 +58,7 @@ int     main(int argc, char **argv){
                                     ft_printf("Execution Arguments : %s\n", token_list->agent->exec_args[i]);
                                 }
                             }
-
+                            ft_printf("Agent Command Status : %s\n", token_list->agent->command_status  ? "true" : "false");
                             ft_printf("Agent Execution Status : %s\n", token_list->agent->execution_status ? "true" : "false");
                         }
                     } else {
@@ -66,7 +67,7 @@ int     main(int argc, char **argv){
                                 ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i].lexeme, token_list->tokens[i].type);
                             }
                         }
-                        ft_printf("Syntax Error... Agenency Failed to Dispatch an Agent\n");
+                        ft_printf("Error... Agenency Failed to Dispatch an Agent\n");
                     }
                     token_list_destroy(token_list);
                 } else {

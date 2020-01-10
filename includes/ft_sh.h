@@ -19,6 +19,7 @@ typedef struct      s_agent
     char            *options;
     char            **files;
     char            **exec_args;
+    bool            command_status;
     bool            execution_status;
 }                   t_agent;
 
@@ -45,6 +46,9 @@ typedef struct      s_buffer
 //Shell
 t_shell             *new_shell();
 
+//Util
+char                *file_search(char *dir, char *alias);
+
 //Environ
 char                **environ_init(char **env);
 void                environ_push(t_shell *shell, char *pair);
@@ -55,7 +59,7 @@ char                *environ_pair_clone(char *original);
 
 //Parser
 char                *lexer(char *str);
-t_token_list        *parser(char **env, char *str);
+t_token_list        *parser(t_shell *shell, char *str);
 
 //Token
 t_token             *generate_token(char  *lexeme, int pos);
@@ -72,10 +76,10 @@ t_buffer            *new_buffer();
 void                buffer_push(t_buffer *buffer, char c);
 
 //Agency
-void                compute_execute(t_agent *approved_agent, t_token_list *token_list);
+void                compute_execute(t_token_list *token_list);
 
 //Agent
-t_agent             *new_agent(char **env, char *alias);
+t_agent             *new_agent(t_shell *shell, t_token *token);
 char                *agent_map_target(char **env, char *alias);
 void                agent_options_push(t_agent *agent, char option);
 void                agent_files_push(t_agent *agent, char *file);

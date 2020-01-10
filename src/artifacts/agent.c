@@ -12,23 +12,29 @@ static char   *aliases[6] = {
     "exit"
 };
 
-t_agent             *new_agent(char **env, char *alias){
+t_agent             *new_agent(t_shell *shell, t_token *token){
     t_agent     *agent = (t_agent *)malloc(sizeof(t_agent));
 
-    agent->alias = alias;
-    if ((agent->target = agent_map_target(env, agent->alias)))
-    {
-        agent->execution_status = false;
-    }
-    else {
-        free(agent);
-        return NULL;
-    }
-
+    agent->alias = token->lexeme;
     agent->options = NULL;
     agent->files = NULL;
 
-    return agent;
+    if (ft_strcmp(token->type, "command") == 0){
+        agent->command_status = true;
+        if ((agent->target = agent_map_target(shell->environ, agent->alias))){
+            agent->execution_status = false;
+            return agent;
+        }
+    } else if (ft_strcmp(token->type, "file") == 0){
+        agent->command_status = false;
+        if ((agent->target = file_search(shell->dir, agent->alias))){
+            agent->execution_status = false;
+            return agent;
+        }
+    }
+
+    free(agent);
+    return NULL;
 }
 
 char                *agent_map_target(char **env, char *alias){
@@ -38,39 +44,18 @@ char                *agent_map_target(char **env, char *alias){
         }
     }
 
+    if (alias[0] == '/'){
+        return alias;
+    }
+
     int pos;
     if ((pos = environ_search(env, "PATH", 4)) != -1){
         char    **paths = ft_strsplit(env[pos] + 5, ':');
         if (paths){
+            char    *file;
             for (size_t i = 0; i < ft_sstrlen(paths); i++){
-                size_t  path_len = ft_strlen(paths[i]);
-                size_t  len = path_len + ft_strlen(alias);
-                char    *file;
-
-                if (paths[i][path_len - 1] != '/')
-                    len++;
-                file = (char *)malloc(sizeof(char) * (len + 1));
-
-                for (size_t j = 0; j < len; j++){
-                    if (j < path_len){
-                        file[j] = paths[i][j];
-                    } else {
-                        //INSERT A '/' BETWEEN PATH AND ALIAS
-                        if (paths[i][path_len - 1] != '/' && j == path_len){
-                            file[j] = '/';
-                        } 
-                        //INSERT AS NORMAL
-                        else {
-                            file[j] = alias[j - path_len - 1];
-                        }
-                    } 
-                }
-                file[len] = '\0';
-                //CHECK FILES EXISTANCE IN SPECIFIED PATH
-                if (access(file, F_OK) == 0){
+                if ((file = file_search(paths[i], alias))){
                     return file;
-                } else {
-                    free(file);
                 }
             }
         }
@@ -125,7 +110,6 @@ void                agent_files_push(t_agent *agent, char *file){
 }
 
 void                agent_generate_exec_args(t_agent *agent){
-    //POSIBLY ADD '-' to options
     char        **exec_args;
     size_t      len;
     size_t      i;
@@ -134,7 +118,7 @@ void                agent_generate_exec_args(t_agent *agent){
         len = ft_sstrlen(agent->files);
     else
         len = 0;
-    if (agent->options)
+    if (ft_strcmp(agent->options, "-") && agent->options)
          i = 2;
     else
         i = 1; 

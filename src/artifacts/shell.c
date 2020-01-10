@@ -19,6 +19,42 @@ t_shell     *new_shell(){
     return shell;
 }
 
+//Directory
+
+char        *file_search(char *dir, char *alias){
+
+    size_t  path_len = ft_strlen(dir);
+    size_t  len = path_len + ft_strlen(alias);
+    char    *file;
+
+    if (dir[path_len - 1] != '/')
+        len++;
+    file = (char *)malloc(sizeof(char) * (len + 1));
+
+    for (size_t j = 0; j < len; j++){
+         if (j < path_len){
+            file[j] = dir[j];
+        } else {
+            //INSERT A '/' BETWEEN PATH AND ALIAS
+            if (dir[path_len - 1] != '/' && j == path_len){
+                file[j] = '/';
+            } 
+            //INSERT AS NORMAL
+            else {
+                file[j] = alias[j - path_len - 1];
+            }
+        } 
+    }
+    file[len] = '\0';
+    //CHECK FILES EXISTANCE IN SPECIFIED PATH
+    if (access(file, F_OK) == 0){
+        return file;
+    } else {
+        free(file);
+    }
+    return NULL;
+}
+
 //Environ
 
 char            **environ_init(char **env){
