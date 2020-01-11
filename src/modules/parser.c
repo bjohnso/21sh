@@ -8,50 +8,95 @@
 static int input_len = 0;
 static int cursor = 0;
 
-char      *lexer(char *str){
-    char    *look = str;  
-    char    *lexeme = NULL;
+int         is_delim(char   *str){
+    if (*str == ' ' || *str == '\t'){
+        return 0;
+    }
+    return -1;
+}
+
+char        *new_lexeme(char *str, int len){
+    char    *lexeme = (char *)malloc(sizeof(char) * (len + 1));
+
+    lexeme[len] = '\0';
+    ft_strncpy(lexeme, str, len);
+    return lexeme;
+}
+
+int         quote_lex(char *str){
+    int     quote_count = 0;
+    int     len = 0;
+
+    if (*str == '"'){
+        if (cursor > 0){
+            if (*(str - 1) == '\\'){
+                return len;
+            }
+        }
+        quote_count++;
+        str++;
+        cursor++;
+        while (*str){
+            if (*str == '"'){ 
+                if (*(str - 1) != '\\'){
+                    return len;
+                }
+            }
+            len++;
+            str++;
+            cursor++;
+        }
+    }
+    if (quote_count == 0)
+        return len;
+    else
+        return -1;
+}
+
+char        *space_lex(char *str){
     int     len = 0;
     int     padding = 0;
 
-    look += cursor;
-
-    while (*look){
-        if (*look == ' ' || *look == '\t'){
-            while(*look == ' ' || *look == 9){
-                ft_printf("TAB");
+    while (*str){
+        if (is_delim(str) == 0){
+            while(is_delim(str) == 0){
                 cursor++;
-                look++;
+                str++;
                 padding++;
             }
             break;
         }
-        else 
+        else{
             len++;
+        } 
         cursor++;
-        look++;
+        str++;
     }
 
-    if (len > 0){
-
-        //Allocate memory for lexeme
-        lexeme = (char*)malloc(sizeof(char) * len);
-        lexeme[len] = '\0';
-            
+    if (len > 0){        
         //Set lookahead pointer to start of lexeme
-        look = look - len - padding;
+        str = str - len - padding;
 
         //Copy Lexeme into return value for len characters
-        ft_strncpy(lexeme, look, len);
-
-        //Reset len to zero
-        len = 0;
-
-        ft_printf("LEX: %s\n", lexeme);
-
-        return lexeme;
+        return new_lexeme(str, len);
     }
+    return NULL;
+}
 
+char        *lexer(char *str){
+    char    *look = str;  
+
+    look += cursor;
+
+    while (*look){
+        int     quote_len = quote_lex(look);
+        if (quote_len > 0){
+            return new_lexeme(look + 1, quote_len);
+        } else if (quote_len == -1){
+            return NULL;
+        }
+        return space_lex(look);
+    }
     return NULL;
 }
 

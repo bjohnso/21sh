@@ -60,6 +60,10 @@ char                *environ_pair_clone(char *original);
 //Parser
 char                *lexer(char *str);
 t_token_list        *parser(t_shell *shell, char *str);
+int                 quote_lex(char *str);
+char                *space_lex(char *str);
+char                *new_lexeme(char *str, int size);
+int                 delim(char *str);
 
 //Token
 t_token             *generate_token(char  *lexeme, int pos);
