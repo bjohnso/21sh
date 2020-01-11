@@ -27,14 +27,21 @@ void     mini_echo(t_shell *shell, t_agent *agent){
 int     mini_cd(t_shell *shell, t_agent *agent){
 
     if (agent->files){
-        if (ft_strcmp(shell->dir, agent->files[0])){
+        if (ft_sstrlen(agent->files) > 1){
+            return -1;
+        }
+        if (ft_strcmp(shell->dir[0], agent->files[0])){
+            if (ft_strcmp(agent->files[0], "-") == 0){
+                return chdir(shell->dir[1]);
+            }
             return chdir(agent->files[0]);
         } else {
             ft_printf("Already at the specified path...");
             return -1;
         }
     } else {
-        return chdir(shell->home_dir);
+        //TODO: USE ENVIRON HOME DIR
+        return chdir(environ_get_value(shell->environ, environ_search(shell->environ, "HOME", 4)));
     }
 }
 
@@ -74,10 +81,18 @@ int    mini_unsetenv(t_shell *shell, t_agent *agent){
     if (agent->files){
         for (size_t i = 0; i < ft_sstrlen(agent->files); i++){
             int pos;
-            if ((pos = environ_search(shell->environ, agent->files[i], ft_strlen(agent->files[i]))) != -1){
-                environ_delete(shell, pos);
+            if (agent->files[i][0] == '$'){
+                if ((pos = environ_search(shell->environ, agent->files[i] + 1, ft_strlen(agent->files[i])- 1)) != -1){
+                    environ_delete(shell, pos);
+                } else {
+                    return -1;
+                }
             } else {
-                return -1;
+                if ((pos = environ_search(shell->environ, agent->files[i], ft_strlen(agent->files[i]))) != -1){
+                    environ_delete(shell, pos);
+                } else {
+                    return -1;
+                }
             }
         }
     }

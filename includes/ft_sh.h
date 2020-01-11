@@ -7,8 +7,7 @@
 typedef struct      s_shell
 {
     char            **environ;
-    char            *dir;
-    char            *home_dir;
+    char            **dir;
     bool            exit;
 }                   t_shell;
 
@@ -33,7 +32,6 @@ typedef struct      s_token
 typedef struct      s_token_list
 {
     t_token         *tokens;
-    t_agent         *agent;
     int             size;
 }                   t_token_list;
 
@@ -59,12 +57,13 @@ void                environ_delete(t_shell *shell, int position);
 char                *environ_pair_clone(char *original);
 
 //Parser
-char                *lexer(char *str);
+char                *lexer(char *expansion, char *str);
 t_token_list        *parser(t_shell *shell, char *str);
 int                 quote_lex(char *str);
 char                *space_lex(char *str);
 char                *new_lexeme(char *str, int size);
 int                 delim(char *str);
+char                *expand(char *lexeme, char *expansion, int pos);
 
 //Token
 t_token             *generate_token(char  *lexeme, int pos);
@@ -81,7 +80,7 @@ t_buffer            *new_buffer();
 void                buffer_push(t_buffer *buffer, char c);
 
 //Agency
-void                compute_execute(t_token_list *token_list);
+t_agent             *compute_execute(t_shell *shell, t_token_list *token_list);
 
 //Agent
 t_agent             *new_agent(t_shell *shell, t_token *token);

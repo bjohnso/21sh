@@ -11,8 +11,9 @@ t_shell     *new_shell(){
     t_shell     *shell;
 
     shell = (t_shell *)malloc(sizeof(t_shell));
-    shell->home_dir = getenv("HOME");
-    shell->dir = getcwd(NULL, 0);
+    shell->dir = (char**)malloc(sizeof(char *) * 3);
+    shell->dir[2] = NULL;
+    shell->dir[0] = getcwd(NULL, 0);
     shell->exit = false;
     shell->environ = environ_init(environ);
 
@@ -101,7 +102,7 @@ int           environ_search(char **env, char *pair, int split){
 char        *environ_get_value(char **env, int pos){
     for (size_t i = 0; i < ft_strlen(env[pos]); i++){
         if (env[pos][i] == '='){
-            return env[pos] + i;
+            return env[pos] + i + 1;
         }
     }
     return NULL;

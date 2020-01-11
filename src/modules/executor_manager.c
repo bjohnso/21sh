@@ -30,8 +30,11 @@ int         execute(t_shell *shell, t_agent *agent){
             status =  mini_cd(shell, agent);
             if (status != -1){
                 agent->execution_status = true;
-                free(shell->dir);
-                shell->dir = getcwd(NULL, 0);
+                if (shell->dir[1])
+                    free(shell->dir[1]);
+                char *temp = shell->dir[0];
+                shell->dir[0] = getcwd(NULL, 0);
+                shell->dir[1] = temp;
             }
         }
         else if (ft_strcmp(agent->alias, "env") == 0){

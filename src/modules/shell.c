@@ -10,6 +10,7 @@ int     main(int argc, char **argv){
     //Shell
     t_shell         *shell = new_shell();
     t_token_list    *token_list;
+    t_agent         *approved_agent;
     char            *user_input;
 
     if (argc > 0 && argv[0]){
@@ -21,45 +22,44 @@ int     main(int argc, char **argv){
                 //REQUEST A t_token_list * from the PARSER
                 if ((token_list = parser(shell, user_input))){
                     //REQUEST A t_agent * BE BRIEFED FOR DISPATCH BY AGENCY
-                    if (token_list->agent){
-                        if (token_list->agent->command_status){
-                            compute_execute(token_list);
-                            if (execute(shell, token_list->agent) == -1){
+                    if ((approved_agent = compute_execute(shell, token_list))){
+                        if (approved_agent->command_status){
+                            if (execute(shell, approved_agent) == -1){
                                 ft_printf("Execution Error... Executor Manager Failed to Dispatch...\n");
                             }
                         } else {
-                            ft_printf("%s is a directory\n", token_list->agent->alias);
+                            ft_printf("%s is a directory\n", approved_agent->alias);
                         }
                         if (argv[1] && ft_strcmp(argv[1], "-e") == 0){
 
                             ft_printf("%s","\n\n----------EXECUTION REPORT----------\n\n");
 
-                            ft_printf("Current Directory : %s\n", shell->dir);
+                            ft_printf("Current Directory : %s\n", shell->dir[0]);
 
                             for (int i = 0; i < token_list->size; i++){
                                 ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i].lexeme, token_list->tokens[i].type);
                             }
 
-                            ft_printf("Agent Alias : %s\n", token_list->agent->alias);
-                            ft_printf("Agent Target : %s\n", token_list->agent->target);
+                            ft_printf("Agent Alias : %s\n", approved_agent->alias);
+                            ft_printf("Agent Target : %s\n", approved_agent->target);
                         
-                            if(token_list->agent->options){
-                                ft_printf("Agent Options : %s\n", token_list->agent->options);
+                            if(approved_agent->options){
+                                ft_printf("Agent Options : %s\n", approved_agent->options);
                             }
 
-                            if (token_list->agent->files){
-                                for (size_t i = 0; i < ft_sstrlen(token_list->agent->files); i++){
-                                    ft_printf("Agent Payload : %s\n", token_list->agent->files[i]);
+                            if (approved_agent->files){
+                                for (size_t i = 0; i < ft_sstrlen(approved_agent->files); i++){
+                                    ft_printf("Agent Payload : %s\n", approved_agent->files[i]);
                                 }
                             }
 
-                            if (token_list->agent->exec_args){
-                                for (size_t i = 0; i < ft_sstrlen(token_list->agent->exec_args); i++){
-                                    ft_printf("Execution Arguments : %s\n", token_list->agent->exec_args[i]);
+                            if (approved_agent->exec_args){
+                                for (size_t i = 0; i < ft_sstrlen(approved_agent->exec_args); i++){
+                                    ft_printf("Execution Arguments : %s\n", approved_agent->exec_args[i]);
                                 }
                             }
-                            ft_printf("Agent Command Status : %s\n", token_list->agent->command_status  ? "true" : "false");
-                            ft_printf("Agent Execution Status : %s\n", token_list->agent->execution_status ? "true" : "false");
+                            ft_printf("Agent Command Status : %s\n", approved_agent->command_status  ? "true" : "false");
+                            ft_printf("Agent Execution Status : %s\n", approved_agent->execution_status ? "true" : "false");
                         }
                     } else {
                         if (argv[1] && ft_strcmp(argv[1], "-e") == 0){

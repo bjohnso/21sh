@@ -33,9 +33,10 @@ t_token         *generate_token(char  *lexeme, int pos){
         return new_token(lexeme, pos, "command");
     }
     else {
-        if (*lexeme == '-'){
+        if (*lexeme == '-' && ft_strlen(lexeme) > 1){
             return new_token(lexeme, pos, "option");
-        } else {
+        }
+        else {
             return new_token(lexeme, pos, "file");
         }
     }

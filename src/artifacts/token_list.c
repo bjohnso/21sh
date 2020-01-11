@@ -37,17 +37,6 @@ void            token_list_destroy(t_token_list *token_list){
         free(token_list->tokens[i].lexeme);
     }
     free(token_list->tokens);
-
-    if (token_list->agent){
-        if (token_list->agent->options){
-            free(token_list->agent->options);
-        }
-
-        if (token_list->agent->files){
-            free(token_list->agent->files);
-        }
-        free(token_list->agent);
-    }
     free(token_list);
     token_list = NULL;
 }

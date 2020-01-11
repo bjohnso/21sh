@@ -27,7 +27,7 @@ t_agent             *new_agent(t_shell *shell, t_token *token){
         }
     } else if (ft_strcmp(token->type, "file") == 0){
         agent->command_status = false;
-        if ((agent->target = file_search(shell->dir, agent->alias))){
+        if ((agent->target = file_search(shell->dir[0], agent->alias))){
             agent->execution_status = false;
             return agent;
         }

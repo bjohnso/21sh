@@ -68,9 +68,9 @@ char        *space_lex(char *str){
         }
         else{
             len++;
-        } 
+        }
         cursor++;
-        str++;
+        str++; 
     }
 
     if (len > 0){        
@@ -83,8 +83,9 @@ char        *space_lex(char *str){
     return NULL;
 }
 
-char        *lexer(char *str){
-    char    *look = str;  
+char        *lexer(char *expansion, char *str){
+    char    *look = str;
+    char    *lexeme;  
 
     look += cursor;
 
@@ -95,36 +96,67 @@ char        *lexer(char *str){
         } else if (quote_len == -1){
             return NULL;
         }
-        return space_lex(look);
+
+        lexeme = space_lex(look);
+        int     pos = 0;
+        while(*lexeme){
+            if (*lexeme == '~'){
+                lexeme = expand(lexeme - pos, expansion, pos);
+                pos = 0;
+            }
+            pos++;
+            lexeme++;
+        }
+        return lexeme - pos;
     }
     return NULL;
+}
+
+char        *expand(char *lexeme, char *expansion, int pos){
+    size_t  len_expansion = ft_strlen(expansion);
+    size_t  len_lexeme = ft_strlen(lexeme);
+    size_t  len = len_lexeme - 1 + len_expansion;
+
+    char    *expanded = (char *)malloc(sizeof(char) * len + 1);
+    expanded[len] = '\0';
+
+    for (size_t i = 0; i < len; i++){
+        if (i < (size_t)pos){
+            expanded[i] = lexeme[i];
+        } else {
+            if (i == (size_t)pos){
+                for (size_t j = pos; j < len_expansion; j++){
+                    expanded[j] = expansion[j - pos];
+                    i = j;
+                }
+            } else {
+                expanded[i] = lexeme[++pos];
+            }
+        }
+    }
+    free(lexeme);
+    if (!expanded){
+        free(expanded);
+        return NULL;
+    }
+    return expanded;
 }
 
 t_token_list    *parser(t_shell *shell, char *str){
     //Set Global Input length
     input_len = ft_strlen(str);
     cursor = 0;
-    t_agent         *agent;
     char            *lexeme;
     t_token_list    *token_list = new_token_list();
     int             pos = 0;
 
     //Watch out for memeory leaks!!!
     while(cursor < input_len){
-        if ((lexeme = lexer(str))){
+        if ((lexeme = lexer(environ_get_value(shell->environ, environ_search(shell->environ, "HOME", 4)), str))){
             t_token     *temp = generate_token(lexeme, pos);
             if (!temp){
                 free(temp);
                 return NULL;
-            }
-
-            if (pos == 0){
-                if ((agent = new_agent(shell, temp))){
-                    token_list->agent = agent;
-                } else {
-                    free(temp);
-                    return NULL;
-                }
             }
 
             token_list_push(token_list, temp);
@@ -132,7 +164,8 @@ t_token_list    *parser(t_shell *shell, char *str){
         }
     }
 
-    if (token_list->size > 0)
+    if (token_list->size > 0){
         return token_list;
+    }
     return NULL;
 }
