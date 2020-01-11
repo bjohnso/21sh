@@ -10,7 +10,7 @@ char        *input_reader(){
 
     while (1){
         c = ft_getchar();
-        if (c != '\n' && c != '\t' && c != '\r' && c != '\0' && c != -1){
+        if (c != '\n' && c != '\r' && c != '\0' && c != -1){
             buffer_push(buffer, c);
         } else {
             if (buffer->size > 0){

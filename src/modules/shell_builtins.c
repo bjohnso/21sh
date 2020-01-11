@@ -70,7 +70,6 @@ int    mini_unsetenv(t_shell *shell, t_agent *agent){
             if ((pos = environ_search(shell->environ, agent->files[i], ft_strlen(agent->files[i]))) != -1){
                 environ_delete(shell, pos);
             } else {
-                ft_printf("ENVIRON SEARCH RETURN %d\n", pos);
                 return -1;
             }
         }

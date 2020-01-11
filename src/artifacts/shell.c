@@ -41,7 +41,10 @@ char        *file_search(char *dir, char *alias){
             } 
             //INSERT AS NORMAL
             else {
-                file[j] = alias[j - path_len - 1];
+                if (dir[path_len - 1] != '/')
+                    file[j] = alias[j - path_len - 1];
+                else
+                    file[j] = alias[j - path_len];
             }
         } 
     }
