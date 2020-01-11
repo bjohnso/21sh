@@ -3,17 +3,24 @@
 #include <unistd.h>
 #include "ft_sh.h"
 
-void     mini_echo(t_agent *agent){
+void     mini_echo(t_shell *shell, t_agent *agent){
 
     if (agent->files){
         for (size_t i = 0; i < ft_sstrlen(agent->files); i++){
-            ft_printf(agent->files[i]);
+            if (agent->files[i][0] == '$'){
+                int     pos = environ_search(shell->environ, agent->files[i] + 1, ft_strlen(agent->files[i]) - 1);
+                if (pos != -1){
+                    ft_printf("%s", environ_get_value(shell->environ, pos));
+                }
+            }
+            else
+                ft_printf("%s", agent->files[i]);
             if (i + 1 < ft_sstrlen(agent->files))
-                ft_printf(" ");
+                ft_printf("%s"," ");
         }
-        ft_printf("\n");
+        ft_printf("%s","\n");
     } else {
-        ft_printf(" \n");
+        ft_printf("%s"," \n");
     }
 }
 

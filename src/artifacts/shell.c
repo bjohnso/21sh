@@ -98,6 +98,15 @@ int           environ_search(char **env, char *pair, int split){
     return -1;
 }
 
+char        *environ_get_value(char **env, int pos){
+    for (size_t i = 0; i < ft_strlen(env[pos]); i++){
+        if (env[pos][i] == '='){
+            return env[pos] + i;
+        }
+    }
+    return NULL;
+}
+
 void            environ_replace(t_shell *shell, char *pair, int position){
     free(shell->environ[position]);
     shell->environ[position] = environ_pair_clone(pair);

@@ -53,6 +53,7 @@ char                *file_search(char *dir, char *alias);
 char                **environ_init(char **env);
 void                environ_push(t_shell *shell, char *pair);
 int                 environ_search(char **env, char *pair, int split);
+char                *environ_get_value(char **env, int pos);
 void                environ_replace(t_shell *shell, char *pair, int position);
 void                environ_delete(t_shell *shell, int position);
 char                *environ_pair_clone(char *original);
@@ -94,7 +95,7 @@ void                agent_clone(t_agent *clone, t_agent *agent);
 int                 execute(t_shell *shell, t_agent *agent);
 
 //Shell-Builtins
-void                mini_echo(t_agent *agent);
+void                mini_echo(t_shell *shell, t_agent *agent);
 int                 mini_cd(t_shell *shell, t_agent *agent);
 void                mini_env(t_shell *shell);
 int                 mini_setenv(t_shell *shell, t_agent *agent);

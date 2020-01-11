@@ -24,7 +24,7 @@ int         execute(t_shell *shell, t_agent *agent){
         }
     } else {
         if (ft_strcmp(agent->alias, "echo") == 0){
-            mini_echo(agent);
+            mini_echo(shell, agent);
         }
         else if (ft_strcmp(agent->alias, "cd") == 0){
             status =  mini_cd(shell, agent);
