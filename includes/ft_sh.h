@@ -58,12 +58,12 @@ void                environ_delete(t_shell *shell, int position);
 char                *environ_pair_clone(char *original);
 
 //Parser
-char                *lexer(char *expansion, char *str);
+char                *lexer(char *expansion);
 t_token_list        *parser(t_shell *shell, char *str);
-int                 quote_lex(char *str);
-char                *space_lex(char *str);
+int                 quote_lex(void);
+char                *space_lex(void);
 char                *new_lexeme(char *str, int size);
-int                 delim(char *str);
+int                 is_delim(char *str);
 char                *expand(char *lexeme, char *expansion, int pos);
 int					fill_alt(char *expanded, char *expansion, size_t c, size_t pos);
 char				*expand_return(char *lexeme, char *expanded);

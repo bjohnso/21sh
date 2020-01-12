@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 16:09:09 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/12 16:31:02 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/12 17:28:06 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "ft_sh.h"
+
+int				is_delim(char *str)
+{
+	if (*str == ' ' || *str == '\t')
+		return (0);
+	return (-1);
+}
 
 char			*expand(char *lexeme, char *expansion, int pos)
 {

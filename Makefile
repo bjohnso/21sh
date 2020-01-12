@@ -8,8 +8,8 @@ LDFLAGS		+= -L libft/ -lft
 LIBFT		:= libft/libft.a
 
 
-MODULES		:= shell parser input_reader agency executor_manager shell_builtins
-ARTIFACTS	:= token token_list shell environ environ_util buffer agent agent_util
+MODULES		:= agency executor_manager input_reader parser_util parser shell_builtins shell
+ARTIFACTS	:= agent_util agent buffer environ_util environ lexeme shell token_list token
 
 FILES		:=	$(addprefix modules/, $(MODULES)) \
 				$(addprefix artifacts/, $(ARTIFACTS))
