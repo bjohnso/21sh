@@ -1,148 +1,163 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   agent.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/12 11:55:10 by Nullfinder        #+#    #+#             */
+/*   Updated: 2020/01/12 15:29:27 by Nullfinder       ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "ft_sh.h" 
+#include "ft_sh.h"
 
-static char   *aliases[6] = {
-    "echo",
-    "cd",
-    "setenv",
-    "unsetenv",
-    "env",
-    "exit"
+static char		*g_aliases[6] =
+{
+	"echo",
+	"cd",
+	"setenv",
+	"unsetenv",
+	"env",
+	"exit"
 };
 
-t_agent             *new_agent(t_shell *shell, t_token *token){
-    t_agent     *agent = (t_agent *)malloc(sizeof(t_agent));
+t_agent			*new_agent(t_shell *shell, t_token *token)
+{
+	t_agent		*agent;
 
-    agent->alias = token->lexeme;
-    agent->options = NULL;
-    agent->files = NULL;
-
-    if (ft_strcmp(token->type, "command") == 0){
-        agent->command_status = true;
-        if ((agent->target = agent_map_target(shell->environ, agent->alias))){
-            agent->execution_status = false;
-            return agent;
-        }
-    } else if (ft_strcmp(token->type, "file") == 0){
-        agent->command_status = false;
-        if ((agent->target = file_search(shell->dir[0], agent->alias))){
-            agent->execution_status = false;
-            return agent;
-        }
-    }
-
-    free(agent);
-    return NULL;
+	agent = (t_agent *)malloc(sizeof(t_agent));
+	agent->alias = token->lexeme;
+	agent->options = NULL;
+	agent->files = NULL;
+	agent->execution_status = false;
+	if (ft_strcmp(token->type, "command") == 0)
+	{
+		agent->command_status = true;
+		if ((agent->target = agent_map_target(shell->environ, agent->alias)))
+			return (agent);
+	}
+	else if (ft_strcmp(token->type, "file") == 0)
+	{
+		agent->command_status = false;
+		if ((agent->target = file_search(shell->dir[0], agent->alias)))
+			return (agent);
+	}
+	free(agent);
+	return (NULL);
 }
 
-char                *agent_map_target(char **env, char *alias){
-    for (size_t i = 0; i < ft_sstrlen((char **)aliases); i++){
-        if (ft_strcmp(aliases[i], alias) == 0){
-            return "builtin";
-        }
-    }
+char			*agent_map_target(char **env, char *alias)
+{
+	size_t		counter;
+	int			pos;
+	char		**paths;
+	char		*file;
 
-    if (alias[0] == '/'){
-        return alias;
-    }
-
-    int pos;
-    if ((pos = environ_search(env, "PATH", 4)) != -1){
-        char    **paths = ft_strsplit(env[pos] + 5, ':');
-        if (paths){
-            char    *file;
-            for (size_t i = 0; i < ft_sstrlen(paths); i++){
-                if ((file = file_search(paths[i], alias))){
-                    return file;
-                }
-            }
-        }
-    }
-    return NULL;
+	counter = -1;
+	while (++counter < ft_sstrlen((char **)g_aliases))
+		if (ft_strcmp(g_aliases[counter], alias) == 0)
+			return ("builtin");
+	if (alias[0] == '/')
+		return (alias);
+	if ((pos = environ_search(env, "PATH", 4)) != -1)
+	{
+		paths = ft_strsplit(env[pos] + 5, ':');
+		if (paths)
+		{
+			counter = -1;
+			while (++counter < ft_sstrlen(paths))
+				if ((file = file_search(paths[counter], alias)))
+					return (file);
+		}
+	}
+	return (NULL);
 }
 
-void                agent_options_push(t_agent *agent, char option){
-    if (agent->options == NULL){
-        agent->options = (char *)malloc(sizeof(char) + 1);
+void			agent_opt_push(t_agent *agent, char option)
+{
+	size_t		len;
+	size_t		counter;
+	char		*temp;
 
-        agent->options[0] = option;
-        agent->options[1] = '\0';
-    } else {
-        size_t  len = ft_strlen(agent->options);
-        char    *temp = (char *)malloc(sizeof(char) * (len + 2));
-
-        for (size_t i = 0; i < len; i++){
-            temp[i] = agent->options[i];
-        }
-
-        temp[len] = option;
-        temp[len + 1] = '\0';
-
-        free(agent->options);
-
-        agent->options = temp;
-    }
+	if (agent->options == NULL)
+	{
+		agent->options = (char *)malloc(sizeof(char) + 1);
+		agent->options[0] = option;
+		agent->options[1] = '\0';
+	}
+	else
+	{
+		len = ft_strlen(agent->options);
+		counter = -1;
+		temp = (char *)malloc(sizeof(char) * (len + 2));
+		while (++counter < len)
+		{
+			temp[counter] = agent->options[counter];
+		}
+		temp[len] = option;
+		temp[len + 1] = '\0';
+		free(agent->options);
+		agent->options = temp;
+	}
 }
 
-void                agent_files_push(t_agent *agent, char *file){
-    if (agent->files == NULL){
-        agent->files = (char **)malloc(sizeof(char) + 1);
+void			agent_files_push(t_agent *agent, char *file)
+{
+	size_t		len;
+	size_t		counter;
+	char		**temp;
 
-        agent->files[0] = file;
-        agent->files[1] = NULL;
-    } else {
-        size_t  len = ft_sstrlen(agent->files);
-        char    **temp = (char **)malloc(sizeof(char *) * (len + 2));
-
-        for (size_t i = 0; i < len; i++){
-            temp[i] = agent->files[i];
-        }
-
-        temp[len] = file;
-        temp[len + 1] = NULL;
-
-        free(agent->files);
-
-        agent->files = temp;
-    }
+	if (agent->files == NULL)
+	{
+		agent->files = (char **)malloc(sizeof(char) + 1);
+		agent->files[0] = file;
+		agent->files[1] = NULL;
+	}
+	else
+	{
+		len = ft_sstrlen(agent->files);
+		counter = -1;
+		temp = (char **)malloc(sizeof(char *) * (len + 2));
+		while (++counter < len)
+		{
+			temp[counter] = agent->files[counter];
+		}
+		temp[len] = file;
+		temp[len + 1] = NULL;
+		free(agent->files);
+		agent->files = temp;
+	}
 }
 
-void                agent_generate_exec_args(t_agent *agent){
-    char        **exec_args;
-    size_t      len;
-    size_t      i;
+void			agent_generate_exec_args(t_agent *agent)
+{
+	char		**exec_args;
+	size_t		len;
+	size_t		counter;
+	size_t		counter_alt;
 
-    if (agent->files)
-        len = ft_sstrlen(agent->files);
-    else
-        len = 0;
-    if (ft_strcmp(agent->options, "-") && agent->options)
-         i = 2;
-    else
-        i = 1; 
-
-    len += i;
-    exec_args = (char **)malloc(sizeof(char *) * (len + 1));
-
-    exec_args[0] = agent->alias;
-
-    if (i == 2)
-        exec_args[1] = agent->options;
-
-    for(size_t j = i; j < len; j++){
-        exec_args[j] = agent->files[j - i];
-    }
-
-    exec_args[len] = NULL;
-    agent->exec_args = exec_args;
-}
-
-void                agent_clone(t_agent *clone, t_agent *agent){
-    clone->alias = agent->alias;
-    clone->target = agent->target;
-    clone->options = agent->options;
-    clone->files = agent->files;
-    clone->execution_status = agent->execution_status;
+	if (agent->files)
+		len = ft_sstrlen(agent->files);
+	else
+		len = 0;
+	if (ft_strcmp(agent->options, "-") && agent->options)
+		counter = 2;
+	else
+		counter = 1;
+	len += counter;
+	exec_args = (char **)malloc(sizeof(char *) * (len + 1));
+	exec_args[0] = agent->alias;
+	if (counter == 2)
+		exec_args[1] = agent->options;
+	counter_alt = counter - 1;
+	while (counter_alt < len)
+	{
+		exec_args[counter_alt] = agent->files[counter_alt - counter];
+	}
+	exec_args[len] = NULL;
+	agent->exec_args = exec_args;
 }

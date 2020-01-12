@@ -32,20 +32,21 @@ typedef struct      s_token
 typedef struct      s_token_list
 {
     t_token         *tokens;
-    int             size;
+    size_t			size;
 }                   t_token_list;
 
 typedef struct      s_buffer
 {
     char            *str;
-    int             size;
+    size_t			size;
 }                   t_buffer;
 
 //Shell
 t_shell             *new_shell();
 
-//Util
+//Directory
 char                *file_search(char *dir, char *alias);
+void				build_file_path(char *file, char *dir, char *alias);
 
 //Environ
 char                **environ_init(char **env);
@@ -64,6 +65,8 @@ char                *space_lex(char *str);
 char                *new_lexeme(char *str, int size);
 int                 delim(char *str);
 char                *expand(char *lexeme, char *expansion, int pos);
+int					fill_alt(char *expanded, char *expansion, size_t c, size_t pos);
+char				*expand_return(char *lexeme, char *expanded);
 
 //Token
 t_token             *generate_token(char  *lexeme, int pos);
@@ -85,13 +88,14 @@ t_agent             *compute_execute(t_shell *shell, t_token_list *token_list);
 //Agent
 t_agent             *new_agent(t_shell *shell, t_token *token);
 char                *agent_map_target(char **env, char *alias);
-void                agent_options_push(t_agent *agent, char option);
+void                agent_opt_push(t_agent *agent, char option);
 void                agent_files_push(t_agent *agent, char *file);
 void                agent_generate_exec_args(t_agent *agent);
 void                agent_clone(t_agent *clone, t_agent *agent);
 
 //Executor Manager
 int                 execute(t_shell *shell, t_agent *agent);
+int					execute_builtin(t_shell *shell, t_agent *agent);
 
 //Shell-Builtins
 void                mini_echo(t_shell *shell, t_agent *agent);

@@ -9,7 +9,7 @@ LIBFT		:= libft/libft.a
 
 
 MODULES		:= shell parser input_reader agency executor_manager shell_builtins
-ARTIFACTS	:= token token_list shell buffer agent
+ARTIFACTS	:= token token_list shell environ environ_util buffer agent agent_util
 
 FILES		:=	$(addprefix modules/, $(MODULES)) \
 				$(addprefix artifacts/, $(ARTIFACTS))

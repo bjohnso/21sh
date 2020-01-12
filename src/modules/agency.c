@@ -1,35 +1,45 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   agency.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/12 11:55:38 by Nullfinder        #+#    #+#             */
+/*   Updated: 2020/01/12 15:33:09 by Nullfinder       ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include "ft_sh.h"
 
-t_agent         *compute_execute(t_shell *shell, t_token_list *token_list){
+t_agent			*compute_execute(t_shell *shell, t_token_list *t_list)
+{
+	t_agent		*a;
+	size_t		c;
+	size_t		c_alt;
 
-    t_agent     *agent = NULL;
-
-    //TODO: The following comparison's first validate the approved agent master variable as NOT NULL, then checksum it's alias against the first token->lexeme in the token_list
-    if (token_list){
-        //Create Agent using first token
-        agent = new_agent(shell, token_list->tokens);
-        if (agent){
-            agent_options_push(agent, '-');
-            for (int i = 1; i < token_list->size; i++){
-                if (ft_strcmp(token_list->tokens[i].type, "option") == 0){
-                    //CONSTRUCT STRING LITERAL AS OPTION PARAMETERS
-                    for (size_t j = 1; j < ft_strlen(token_list->tokens[i].lexeme) + 1; j++){
-                        if (token_list->tokens[i].lexeme[j] != '-'){
-                            agent_options_push(agent, token_list->tokens[i].lexeme[j]);
-                        }
-                    }
-                } else if (ft_strcmp(token_list->tokens[i].type, "file") == 0){
-                    agent_files_push(agent, token_list->tokens[i].lexeme);
-                } else{
-                    break ;
-                }
-            }
-            agent_generate_exec_args(agent);
-        } 
-    }
-
-    return agent;
+	if ((a = new_agent(shell, t_list->tokens)))
+	{
+		agent_opt_push(a, '-');
+		c = 0;
+		while (++c < t_list->size)
+		{
+			if (ft_strcmp(t_list->tokens[c].type, "option") == 0)
+			{
+				c_alt = 0;
+				while (++c_alt < ft_strlen(t_list->tokens[c].lexeme) + 1)
+					if (t_list->tokens[c].lexeme[c_alt] != '-')
+						agent_opt_push(a, t_list->tokens[c].lexeme[c_alt]);
+			}
+			else if (ft_strcmp(t_list->tokens[c].type, "file") == 0)
+				agent_files_push(a, t_list->tokens[c].lexeme);
+			else
+				break ;
+		}
+		agent_generate_exec_args(a);
+	}
+	return (a);
 }

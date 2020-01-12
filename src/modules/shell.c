@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/12 11:55:48 by Nullfinder        #+#    #+#             */
+/*   Updated: 2020/01/12 14:26:22 by Nullfinder       ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -36,7 +48,7 @@ int     main(int argc, char **argv){
 
                             ft_printf("Current Directory : %s\n", shell->dir[0]);
 
-                            for (int i = 0; i < token_list->size; i++){
+                            for (size_t i = 0; i < token_list->size; i++){
                                 ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i].lexeme, token_list->tokens[i].type);
                             }
 
@@ -63,7 +75,7 @@ int     main(int argc, char **argv){
                         }
                     } else {
                         if (argv[1] && ft_strcmp(argv[1], "-e") == 0){
-                            for (int i = 0; i < token_list->size; i++){
+                            for (size_t i = 0; i < token_list->size; i++){
                                 ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i].lexeme, token_list->tokens[i].type);
                             }
                         }
