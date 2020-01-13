@@ -41,10 +41,10 @@ char			*file_search(char *dir, char *alias)
 {
 	char	*file;
 
-	file = NULL;
-	build_file_path(file, dir, alias);
+	file = build_file_path(dir, alias);
 	if (file)
 	{
+		
 		if (access(file, F_OK) == 0)
 			return (file);
 	}
@@ -52,15 +52,14 @@ char			*file_search(char *dir, char *alias)
 	return (NULL);
 }
 
-void			build_file_path(char *file, char *dir, char *alias)
+char			*build_file_path(char *dir, char *alias)
 {
 	size_t		len;
 	size_t		counter;
+	char		*file;
 
-	len = ft_strlen(dir) + ft_strlen(alias);
+	len = build_file_path_init(dir, alias);
 	counter = -1;
-	if (dir[ft_strlen(dir) - 1] != '/')
-		len++;
 	file = (char *)malloc(sizeof(char) * (len + 1));
 	while (++counter <= len)
 	{
@@ -79,4 +78,15 @@ void			build_file_path(char *file, char *dir, char *alias)
 			}
 		}
 	}
+	return file;
+}
+
+size_t			build_file_path_init(char *dir, char *alias)
+{
+	size_t		len;
+
+	len = ft_strlen(dir) + ft_strlen(alias);
+	if (dir[ft_strlen(dir) - 1] != '/')
+		len++;
+	return len;
 }

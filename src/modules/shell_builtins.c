@@ -27,20 +27,20 @@ void			mini_echo(t_shell *shell, t_agent *agent)
 		{
 			if (agent->files[counter][0] == '$')
 			{
-				pos = environ_search(shell->environ, agent->files[i]
-					+ 1, ft_strlen(agent->files[i]) - 1);
+				pos = environ_search(shell->environ, agent->files[counter]
+					+ 1, ft_strlen(agent->files[counter]) - 1);
 				if (pos != -1)
 					ft_printf("%s", environ_get_value(shell->environ, pos));
 			}
 			else
 				ft_printf("%s", agent->files[counter]);
 			if (counter + 1 < ft_sstrlen(agent->files))
-				write(1, ' ', 1);
+				write(1, " ", 1);
 		}
-		write(1, '\n', 1);
+		write(1, "\n", 1);
 	}
 	else
-		write(1, '\n', 1);
+		write(1, "\n", 1);
 }
 
 int				mini_cd(t_shell *shell, t_agent *agent)
@@ -56,7 +56,10 @@ int				mini_cd(t_shell *shell, t_agent *agent)
 			return (chdir(agent->files[0]));
 		}
 		else
-			return (-1);
+		{
+			ft_printf("%s\n", "Already at the specified directory");
+			return (1);
+		}
 	}
 	else
 		return (chdir(environ_get_value(shell->environ,
@@ -69,7 +72,7 @@ void			mini_env(t_shell *shell)
 
 	counter = -1;
 	while (++counter < ft_sstrlen(shell->environ))
-		ft_printf("%s\n", shell->environ[i]);
+		ft_printf("%s\n", shell->environ[counter]);
 }
 
 int				mini_setenv(t_shell *shell, t_agent *agent)
@@ -96,11 +99,11 @@ int				mini_setenv(t_shell *shell, t_agent *agent)
 			}
 			if (split != 0)
 			{
-				if ((pos = environ_search(shell->environ, agent->files[i],
+				if ((pos = environ_search(shell->environ, agent->files[c],
 					split)) != -1)
-					environ_replace(shell, agent->files[i], pos);
+					environ_replace(shell, agent->files[c], pos);
 				else
-					environ_push(shell, agent->files[i]);
+					environ_push(shell, agent->files[c]);
 			}
 			else
 				return (-1);

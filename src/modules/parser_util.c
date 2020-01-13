@@ -26,14 +26,12 @@ char			*expand(char *lexeme, char *expansion, int pos)
 {
 	size_t	len;
 	size_t	c;
-	size_t	c_alt;
 	char	*expanded;
 
 	len = ft_strlen(lexeme) - 1 + ft_strlen(expansion);
 	expanded = (char *)malloc(sizeof(char) * len + 1);
 	expanded[len] = '\0';
 	c = -1;
-	c_alt = pos - 1;
 	while (++c < len)
 	{
 		if (c < (size_t)pos)
@@ -41,7 +39,7 @@ char			*expand(char *lexeme, char *expansion, int pos)
 		else
 		{
 			if (c == (size_t)pos)
-				c = fill_alt(expanded, expansion, pos - 1, pos);
+				c = insert_expansion(expanded, expansion, pos) - 1;
 			else
 				expanded[c] = lexeme[++pos];
 		}
@@ -49,8 +47,11 @@ char			*expand(char *lexeme, char *expansion, int pos)
 	return (expand_return(lexeme, expanded));
 }
 
-int				fill_alt(char *expanded, char *expansion, size_t c, size_t pos)
+int				insert_expansion(char *expanded, char *expansion, size_t pos)
 {
+	size_t	c;
+
+	c = pos - 1;
 	while (++c < ft_strlen(expansion))
 		expanded[c] = expansion[c - pos];
 	return (c);

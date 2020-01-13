@@ -58,7 +58,7 @@ char			*agent_map_target(char **env, char *alias)
 	char		*file;
 
 	counter = -1;
-	while (++counter < ft_sstrlen((char **)g_aliases))
+	while (++counter < ft_sstrlen((char **)g_aliases) - 1)
 		if (ft_strcmp(g_aliases[counter], alias) == 0)
 			return ("builtin");
 	if (alias[0] == '/')
@@ -69,9 +69,10 @@ char			*agent_map_target(char **env, char *alias)
 		if (paths)
 		{
 			counter = -1;
-			while (++counter < ft_sstrlen(paths))
+			while (++counter < ft_sstrlen(paths)){
 				if ((file = file_search(paths[counter], alias)))
 					return (file);
+			}
 		}
 	}
 	return (NULL);
@@ -154,10 +155,8 @@ void			agent_generate_exec_args(t_agent *agent)
 	if (counter == 2)
 		exec_args[1] = agent->options;
 	counter_alt = counter - 1;
-	while (counter_alt < len)
-	{
+	while (++counter_alt < len)
 		exec_args[counter_alt] = agent->files[counter_alt - counter];
-	}
 	exec_args[len] = NULL;
 	agent->exec_args = exec_args;
 }

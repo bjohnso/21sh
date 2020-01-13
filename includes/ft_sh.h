@@ -46,7 +46,8 @@ t_shell             *new_shell();
 
 //Directory
 char                *file_search(char *dir, char *alias);
-void				build_file_path(char *file, char *dir, char *alias);
+char				*build_file_path(char *dir, char *alias);
+size_t				build_file_path_init(char *dir, char *alias);
 
 //Environ
 char                **environ_init(char **env);
@@ -63,9 +64,10 @@ t_token_list        *parser(t_shell *shell, char *str);
 int                 quote_lex(void);
 char                *space_lex(void);
 char                *new_lexeme(char *str, int size);
+void                global_init(char *str, int pos);
 int                 is_delim(char *str);
 char                *expand(char *lexeme, char *expansion, int pos);
-int					fill_alt(char *expanded, char *expansion, size_t c, size_t pos);
+int					insert_expansion(char *expanded, char *expansion, size_t pos);
 char				*expand_return(char *lexeme, char *expanded);
 
 //Token

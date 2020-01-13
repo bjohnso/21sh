@@ -29,20 +29,29 @@ int				quote_lex(void)
 
 	quote_count = 0;
 	len = 0;
-	if (*g_cursor == '"')
+	if (g_cursor[g_pos] == '"')
 	{
-		if (g_pos > 0)
-			if (*(g_cursor - 1) == '\\')
+		if (g_pos > 0){
+			if (g_cursor[g_pos - 1] == '\\')
+			{
+				g_pos++;
 				return (len);
+			}
+		}
 		quote_count++;
-		g_cursor += ++g_pos;
-		while (*g_cursor)
+		g_pos++;
+		while (g_cursor[g_pos])
 		{
-			if (*g_cursor == '"')
-				if (*(g_cursor - 1) != '\\')
+			if (g_cursor[g_pos] == '"')
+			{
+				if (g_cursor [g_pos - 1] != '\\')
+				{
+					g_pos++;
 					return (len);
+				}
+			}
 			len++;
-			g_cursor += ++g_pos;
+			g_pos++;
 		}
 	}
 	if (quote_count == 0)
@@ -58,23 +67,23 @@ char			*space_lex(void)
 
 	len = 0;
 	padding = 0;
-	while (*g_cursor)
+	while (g_cursor[g_pos])
 	{
-		if (is_delim(g_cursor) == 0)
+		if (is_delim(g_cursor + g_pos) == 0)
 		{
-			while (is_delim(g_cursor) == 0)
+			while (is_delim(g_cursor + g_pos) == 0)
 			{
-				g_cursor += ++g_pos;
+				g_pos++;
 				padding++;
 			}
 			break ;
 		}
 		else
 			len++;
-		g_cursor += ++g_pos;
+		g_pos++;
 	}
 	if (len > 0)
-		return (new_lexeme(g_cursor - len - padding, len));
+		return (new_lexeme(g_cursor + (g_pos - len - padding), len));
 	return (NULL);
 }
 
@@ -84,25 +93,27 @@ char			*lexer(char *expansion)
 	int		quote_len;
 	int		exp_pos;
 
-	while (*g_cursor)
+	while (g_cursor[g_pos])
 	{
 		quote_len = quote_lex();
 		if (quote_len > 0)
-			return (new_lexeme(g_cursor + 1, quote_len));
+			return (new_lexeme(g_cursor + g_pos - 1 - quote_len, quote_len));
 		else if (quote_len == -1)
 			return (NULL);
 		lexeme = space_lex();
-		exp_pos = 0;
-		while (*lexeme)
+		exp_pos = -1;
+		if (lexeme)
 		{
-			if (*lexeme == '~')
+			while (lexeme[++exp_pos])
 			{
-				lexeme = expand(lexeme - exp_pos, expansion, exp_pos);
-				exp_pos = 0;
+				if (lexeme[exp_pos] == '~')
+				{
+					lexeme = expand(lexeme, expansion, exp_pos);
+					exp_pos = -1;
+				}
 			}
-			lexeme += ++exp_pos;
+			return (lexeme);
 		}
-		return (lexeme - exp_pos);
 	}
 	return (NULL);
 }
@@ -114,10 +125,10 @@ t_token_list	*parser(t_shell *shell, char *str)
 	t_token_list	*token_list;
 	t_token			*temp;
 
-	g_cursor = str;
+	global_init(str, 0);
 	token_list = new_token_list();
 	pos = -1;
-	while (*g_cursor)
+	while (g_cursor[g_pos])
 	{
 		if ((lexeme = lexer(environ_get_value(shell->environ,
 			environ_search(shell->environ, "HOME", 4)))))
@@ -132,4 +143,10 @@ t_token_list	*parser(t_shell *shell, char *str)
 		}
 	}
 	return (token_list);
+}
+
+void			global_init(char *str, int pos)
+{
+	g_cursor = str;
+	g_pos = pos;
 }

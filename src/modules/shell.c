@@ -33,6 +33,7 @@ int     main(int argc, char **argv){
                 //TODO: Allow Parser to return error codes
                 //REQUEST A t_token_list * from the PARSER
                 if ((token_list = parser(shell, user_input))){
+					if (token_list->size > 0){
                     //REQUEST A t_agent * BE BRIEFED FOR DISPATCH BY AGENCY
                     if ((approved_agent = compute_execute(shell, token_list))){
                         if (approved_agent->command_status){
@@ -82,6 +83,7 @@ int     main(int argc, char **argv){
                         ft_printf("Error... Agenency Failed to Dispatch an Agent\n");
                     }
                     token_list_destroy(token_list);
+				}
                 } else {
                     ft_printf("Syntax Error\n");
                 }
