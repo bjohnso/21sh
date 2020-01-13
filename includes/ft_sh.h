@@ -43,6 +43,7 @@ typedef struct      s_buffer
 
 //Shell
 t_shell             *new_shell();
+void				shell_destroy(t_shell *shell);
 
 //Directory
 char                *file_search(char *dir, char *alias);
@@ -74,15 +75,21 @@ char				*expand_return(char *lexeme, char *expanded);
 t_token             *generate_token(char  *lexeme, int pos);
 t_token             *new_token(char  *lexeme, int pos, char *type);
 t_token_list        *new_token_list();
-void                token_list_push(t_token_list *token_list, t_token *token);
+t_token_list		*token_list_push(t_token_list *token_list, t_token *token);
 void                token_list_destroy(t_token_list *token_list);
+void				token_destroy(t_token *token);
+void				tokens_destroy(t_token *token, size_t size);
 
 //Input Reader
-char                *input_reader();
+t_buffer			*input_reader();
+
+//Util
+void				sstr_destroy(char **str, int save);
 
 //Buffer
 t_buffer            *new_buffer();
 void                buffer_push(t_buffer *buffer, char c);
+void				buffer_destroy(t_buffer *buffer);
 
 //Agency
 t_agent             *compute_execute(t_shell *shell, t_token_list *token_list);
@@ -94,6 +101,7 @@ void                agent_opt_push(t_agent *agent, char option);
 void                agent_files_push(t_agent *agent, char *file);
 void                agent_generate_exec_args(t_agent *agent);
 void                agent_clone(t_agent *clone, t_agent *agent);
+void				agent_destroy(t_agent *agent);
 
 //Executor Manager
 int                 execute(t_shell *shell, t_agent *agent);

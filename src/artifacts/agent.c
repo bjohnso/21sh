@@ -30,7 +30,7 @@ t_agent			*new_agent(t_shell *shell, t_token *token)
 	t_agent		*agent;
 
 	agent = (t_agent *)malloc(sizeof(t_agent));
-	agent->alias = token->lexeme;
+	agent->alias = ft_strdup(token->lexeme);
 	agent->options = NULL;
 	agent->files = NULL;
 	agent->execution_status = false;
@@ -57,6 +57,7 @@ char			*agent_map_target(char **env, char *alias)
 	char		**paths;
 	char		*file;
 
+	file = NULL;
 	counter = -1;
 	while (++counter < ft_sstrlen((char **)g_aliases) - 1)
 		if (ft_strcmp(g_aliases[counter], alias) == 0)
@@ -71,11 +72,27 @@ char			*agent_map_target(char **env, char *alias)
 			counter = -1;
 			while (++counter < ft_sstrlen(paths)){
 				if ((file = file_search(paths[counter], alias)))
-					return (file);
+					break ;
 			}
 		}
 	}
-	return (NULL);
+	//sstr_destroy(paths, counter);
+	return (file);
+}
+
+void			sstr_destroy(char **str, int save)
+{
+	size_t		c;
+
+	c = -1;
+
+	if (str)
+	{
+		while (++c < ft_sstrlen(str))
+			if (str[c] && c != (size_t)save)
+				free(str);
+	}
+	free(str);
 }
 
 void			agent_opt_push(t_agent *agent, char option)

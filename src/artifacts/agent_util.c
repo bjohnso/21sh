@@ -23,3 +23,29 @@ void			agent_clone(t_agent *clone, t_agent *agent)
 	clone->files = agent->files;
 	clone->execution_status = agent->execution_status;
 }
+
+void			agent_destroy(t_agent *agent)
+{
+	size_t		c;
+
+	c = -1;
+	if (agent->files)
+	{
+		while (++c < ft_sstrlen(agent->files))
+			if (agent->files[c]) 
+				free(agent->files[c]);
+		free(agent->files);
+	}
+	if (agent->exec_args)
+	{
+		c = -1;
+		while (++c < ft_sstrlen(agent->exec_args))
+			if(agent->exec_args[c])
+				free(agent->exec_args[c]);
+		free(agent->exec_args);
+	}
+	free(agent->alias);
+	free(agent->target);
+	if (agent->options)
+		free(agent->options);
+}

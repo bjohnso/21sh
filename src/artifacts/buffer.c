@@ -51,3 +51,10 @@ void			buffer_push(t_buffer *buffer, char c)
 		buffer->size = 1;
 	}
 }
+
+void			buffer_destroy(t_buffer *buffer)
+{
+	if (buffer->size > 0)
+		free(buffer->str);
+	free(buffer);
+}

@@ -24,7 +24,7 @@ t_token_list		*new_token_list(void)
 	t_token_list	*token_list;
 
 	token_list = (t_token_list *)malloc(sizeof(t_token_list));
-	token_list->tokens = (t_token *)malloc(sizeof(t_token));
+	token_list->tokens = NULL;
 	token_list->size = 0;
 	return (token_list);
 }
@@ -33,21 +33,31 @@ t_token_list		*new_token_list(void)
 **Mutators
 */
 
-void				token_list_push(t_token_list *token_list, t_token *token)
+t_token_list		*token_list_push(t_token_list *token_list, t_token *token)
 {
-	size_t		counter;
 	t_token		*tokens;
+	size_t		c;
 
-	tokens = (t_token *)malloc(sizeof(t_token) * (token_list->size + 1));
-	counter = -1;
-	while (++counter < token_list->size)
-	{
-		tokens[counter] = token_list->tokens[counter];
-	}
-	tokens[token_list->size] = *token;
-	free(token_list->tokens);
+	tokens = (t_token *)ft_memalloc(sizeof(t_token) * (token_list->size + 1));
+	c = -1;
+	while (++c < token_list->size)
+		tokens[c] = token_list->tokens[c];
+	tokens[c] = *token;
+	token_destroy(token);
+	tokens_destroy(token_list->tokens, token_list->size);
+	token_list->size++;
 	token_list->tokens = tokens;
-	token_list->size += 1;
+	return token_list;
+}
+
+void				tokens_destroy(t_token *tokens, size_t size)
+{
+	size_t		c;
+
+	c = -1;
+	while(++c < size)
+		token_destroy(tokens + c);
+	free(tokens);
 }
 
 void				token_list_destroy(t_token_list *token_list)
@@ -57,9 +67,9 @@ void				token_list_destroy(t_token_list *token_list)
 	counter = -1;
 	while (++counter < token_list->size)
 	{
-		free(token_list->tokens[counter].lexeme);
+		if (token_list->tokens + counter)
+			token_destroy(token_list->tokens + counter);
 	}
-	free(token_list->tokens);
 	free(token_list);
 	token_list = NULL;
 }

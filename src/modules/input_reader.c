@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include "ft_sh.h"
 
-char			*input_reader(void)
+t_buffer		*input_reader(void)
 {
 	t_buffer	*buffer;
 	char		c;
@@ -31,7 +31,7 @@ char			*input_reader(void)
 		else
 		{
 			if (buffer->size > 0)
-				return (buffer->str);
+				return (buffer);
 			else
 				return (NULL);
 		}

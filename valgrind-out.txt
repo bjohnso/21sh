@@ -1,0 +1,631 @@
+==30013== Memcheck, a memory error detector
+==30013== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==30013== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==30013== Command: ./minishell
+==30013== Parent PID: 13234
+==30013== 
+--30013-- 
+--30013-- Valgrind options:
+--30013--    --leak-check=full
+--30013--    --show-leak-kinds=all
+--30013--    --track-origins=yes
+--30013--    --verbose
+--30013--    --log-file=valgrind-out.txt
+--30013-- Contents of /proc/version:
+--30013--   Linux version 5.0.0-37-generic (buildd@lcy01-amd64-023) (gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1)) #40~18.04.1-Ubuntu SMP Thu Nov 14 12:06:39 UTC 2019
+--30013-- 
+--30013-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--30013-- Page sizes: currently 4096, max supported 4096
+--30013-- Valgrind library directory: /usr/lib/valgrind
+--30013-- Reading syms from /home/nullfinder/CProjects/Minishell/minishell
+--30013-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
+--30013--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
+--30013--   .. CRC mismatch (computed 1b7c895e wanted 2943108a)
+--30013--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
+--30013--   .. CRC is valid
+--30013-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--30013--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--30013--   .. CRC mismatch (computed 41ddb025 wanted 9972f546)
+--30013--    object doesn't have a symbol table
+--30013--    object doesn't have a dynamic symbol table
+--30013-- Scheduler: using generic scheduler lock implementation.
+--30013-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==30013== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-30013-by-nullfinder-on-???
+==30013== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-30013-by-nullfinder-on-???
+==30013== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-30013-by-nullfinder-on-???
+==30013== 
+==30013== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==30013== don't want to do, unless you know exactly what you're doing,
+==30013== or are doing some strange experiment):
+==30013==   /usr/lib/valgrind/../../bin/vgdb --pid=30013 ...command...
+==30013== 
+==30013== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==30013==   /path/to/gdb ./minishell
+==30013== and then give GDB the following command
+==30013==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=30013
+==30013== --pid is optional if only one valgrind process is running
+==30013== 
+--30013-- REDIR: 0x401f2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580608c1 (???)
+--30013-- REDIR: 0x401f0d0 (ld-linux-x86-64.so.2:index) redirected to 0x580608db (???)
+--30013-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--30013--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--30013--   .. CRC mismatch (computed 50df1b30 wanted 4800a4cf)
+--30013--    object doesn't have a symbol table
+--30013-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--30013--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--30013--   .. CRC mismatch (computed f893b962 wanted 95ee359e)
+--30013--    object doesn't have a symbol table
+==30013== WARNING: new redirection conflicts with existing -- ignoring it
+--30013--     old: 0x0401f2f0 (strlen              ) R-> (0000.0) 0x580608c1 ???
+--30013--     new: 0x0401f2f0 (strlen              ) R-> (2007.0) 0x04c32db0 strlen
+--30013-- REDIR: 0x401d360 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c33ee0 (strcmp)
+--30013-- REDIR: 0x401f830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c374f0 (mempcpy)
+--30013-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
+--30013--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
+--30013--   .. CRC mismatch (computed b1c74187 wanted 042cc048)
+--30013--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
+--30013--   .. CRC is valid
+--30013-- REDIR: 0x4edac70 (libc.so.6:memmove) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ed9d40 (libc.so.6:strncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edaf50 (libc.so.6:strcasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ed9790 (libc.so.6:strcat) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ed9d70 (libc.so.6:rindex) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edc7c0 (libc.so.6:rawmemchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edade0 (libc.so.6:mempcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edac10 (libc.so.6:bcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ed9d00 (libc.so.6:strncmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ed9800 (libc.so.6:strcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edad40 (libc.so.6:memset) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ef80f0 (libc.so.6:wcschr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ed9ca0 (libc.so.6:strnlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ed9870 (libc.so.6:strcspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edafa0 (libc.so.6:strncasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ed9840 (libc.so.6:strcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edb0e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ed9da0 (libc.so.6:strpbrk) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ed97c0 (libc.so.6:index) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ed9c70 (libc.so.6:strlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ee46c0 (libc.so.6:memrchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edaff0 (libc.so.6:strcasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edabe0 (libc.so.6:memchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4ef8eb0 (libc.so.6:wcslen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4eda050 (libc.so.6:strspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edaf20 (libc.so.6:stpncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edaef0 (libc.so.6:stpcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edc7f0 (libc.so.6:strchrnul) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4edb040 (libc.so.6:strncasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--30013-- REDIR: 0x4fca3c0 (libc.so.6:__strrchr_avx2) redirected to 0x4c32730 (rindex)
+--30013-- REDIR: 0x4ed3070 (libc.so.6:malloc) redirected to 0x4c2faa0 (malloc)
+--30013-- REDIR: 0x4ed4c30 (libc.so.6:realloc) redirected to 0x4c31cb0 (realloc)
+--30013-- REDIR: 0x4ed3950 (libc.so.6:free) redirected to 0x4c30cd0 (free)
+==30013== Invalid free() / delete / delete[] / realloc()
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Address 0x52313f0 is 0 bytes inside a block of size 8 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B0B1: token_list_push (token_list.c:46)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10ABC4: new_lexeme (lexeme.c:22)
+==30013==    by 0x1094CD: space_lex (parser.c:86)
+==30013==    by 0x10953F: lexer (parser.c:103)
+==30013==    by 0x109647: parser (parser.c:133)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Invalid free() / delete / delete[] / realloc()
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B148: tokens_destroy (token_list.c:60)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Address 0x52315c0 is 0 bytes inside a block of size 24 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Invalid read of size 8
+==30013==    at 0x10B30E: token_destroy (token.c:69)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Address 0x5231808 is 24 bytes inside a block of size 48 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Invalid read of size 8
+==30013==    at 0x10B31A: token_destroy (token.c:70)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Address 0x5231808 is 24 bytes inside a block of size 48 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Invalid free() / delete / delete[] / realloc()
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Address 0x5231808 is 24 bytes inside a block of size 48 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Invalid read of size 1
+==30013==    at 0x10BBA7: ft_strdup (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10D4BC: ft_str_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C080: ft_get_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C190: ft_handle_spec (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C2A4: ft_strprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B5FF: ft_vasprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B4E8: ft_printf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x109DB3: main (shell.c:47)
+==30013==  Address 0x52313f0 is 0 bytes inside a block of size 8 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B0B1: token_list_push (token_list.c:46)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10ABC4: new_lexeme (lexeme.c:22)
+==30013==    by 0x1094CD: space_lex (parser.c:86)
+==30013==    by 0x10953F: lexer (parser.c:103)
+==30013==    by 0x109647: parser (parser.c:133)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Invalid read of size 1
+==30013==    at 0x10BC09: ft_strdup (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10D4BC: ft_str_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C080: ft_get_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C190: ft_handle_spec (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C2A4: ft_strprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B5FF: ft_vasprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B4E8: ft_printf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x109DB3: main (shell.c:47)
+==30013==  Address 0x52313f0 is 0 bytes inside a block of size 8 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B0B1: token_list_push (token_list.c:46)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10ABC4: new_lexeme (lexeme.c:22)
+==30013==    by 0x1094CD: space_lex (parser.c:86)
+==30013==    by 0x10953F: lexer (parser.c:103)
+==30013==    by 0x109647: parser (parser.c:133)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Invalid read of size 1
+==30013==    at 0x10BBF3: ft_strdup (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10D4BC: ft_str_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C080: ft_get_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C190: ft_handle_spec (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C2A4: ft_strprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B5FF: ft_vasprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B4E8: ft_printf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x109DB3: main (shell.c:47)
+==30013==  Address 0x52313f0 is 0 bytes inside a block of size 8 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B0B1: token_list_push (token_list.c:46)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10ABC4: new_lexeme (lexeme.c:22)
+==30013==    by 0x1094CD: space_lex (parser.c:86)
+==30013==    by 0x10953F: lexer (parser.c:103)
+==30013==    by 0x109647: parser (parser.c:133)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Invalid free() / delete / delete[] / realloc()
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Address 0x52313f0 is 0 bytes inside a block of size 8 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B0B1: token_list_push (token_list.c:46)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10ABC4: new_lexeme (lexeme.c:22)
+==30013==    by 0x1094CD: space_lex (parser.c:86)
+==30013==    by 0x10953F: lexer (parser.c:103)
+==30013==    by 0x109647: parser (parser.c:133)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Invalid read of size 8
+==30013==    at 0x10B30E: token_destroy (token.c:69)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Address 0x5231a48 is 24 bytes inside a block of size 72 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Invalid read of size 8
+==30013==    at 0x10B31A: token_destroy (token.c:70)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Address 0x5231a48 is 24 bytes inside a block of size 72 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Invalid free() / delete / delete[] / realloc()
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Address 0x5231a48 is 24 bytes inside a block of size 72 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== Conditional jump or move depends on uninitialised value(s)
+==30013==    at 0x10B9EB: ft_sstrlen (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10AD63: shell_destroy (shell.c:51)
+==30013==    by 0x109DFD: main (shell.c:55)
+==30013==  Uninitialised value was created by a heap allocation
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10AC18: new_shell (shell.c:28)
+==30013==    by 0x109C9E: main (shell.c:27)
+==30013== 
+==30013== 
+==30013== HEAP SUMMARY:
+==30013==     in use at exit: 0 bytes in 0 blocks
+==30013==   total heap usage: 157 allocs, 168 frees, 10,251 bytes allocated
+==30013== 
+==30013== All heap blocks were freed -- no leaks are possible
+==30013== 
+==30013== ERROR SUMMARY: 58 errors from 13 contexts (suppressed: 0 from 0)
+==30013== 
+==30013== 1 errors in context 1 of 13:
+==30013== Invalid free() / delete / delete[] / realloc()
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Address 0x5231808 is 24 bytes inside a block of size 48 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== 
+==30013== 1 errors in context 2 of 13:
+==30013== Invalid read of size 8
+==30013==    at 0x10B31A: token_destroy (token.c:70)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Address 0x5231808 is 24 bytes inside a block of size 48 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== 
+==30013== 1 errors in context 3 of 13:
+==30013== Invalid read of size 8
+==30013==    at 0x10B30E: token_destroy (token.c:69)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Address 0x5231808 is 24 bytes inside a block of size 48 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== 
+==30013== 2 errors in context 4 of 13:
+==30013== Conditional jump or move depends on uninitialised value(s)
+==30013==    at 0x10B9EB: ft_sstrlen (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10AD63: shell_destroy (shell.c:51)
+==30013==    by 0x109DFD: main (shell.c:55)
+==30013==  Uninitialised value was created by a heap allocation
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10AC18: new_shell (shell.c:28)
+==30013==    by 0x109C9E: main (shell.c:27)
+==30013== 
+==30013== 
+==30013== 2 errors in context 5 of 13:
+==30013== Invalid free() / delete / delete[] / realloc()
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Address 0x5231a48 is 24 bytes inside a block of size 72 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== 
+==30013== 2 errors in context 6 of 13:
+==30013== Invalid read of size 8
+==30013==    at 0x10B31A: token_destroy (token.c:70)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Address 0x5231a48 is 24 bytes inside a block of size 72 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== 
+==30013== 2 errors in context 7 of 13:
+==30013== Invalid read of size 8
+==30013==    at 0x10B30E: token_destroy (token.c:69)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Address 0x5231a48 is 24 bytes inside a block of size 72 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== 
+==30013== 2 errors in context 8 of 13:
+==30013== Invalid free() / delete / delete[] / realloc()
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B148: tokens_destroy (token_list.c:60)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Address 0x52315c0 is 0 bytes inside a block of size 24 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B330: token_destroy (token.c:72)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B3CC: ft_memalloc (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B000: token_list_push (token_list.c:41)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== 
+==30013== 3 errors in context 9 of 13:
+==30013== Invalid free() / delete / delete[] / realloc()
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B1A4: token_list_destroy (token_list.c:71)
+==30013==    by 0x109DD2: main (shell.c:49)
+==30013==  Address 0x52313f0 is 0 bytes inside a block of size 8 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B0B1: token_list_push (token_list.c:46)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10ABC4: new_lexeme (lexeme.c:22)
+==30013==    by 0x1094CD: space_lex (parser.c:86)
+==30013==    by 0x10953F: lexer (parser.c:103)
+==30013==    by 0x109647: parser (parser.c:133)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== 
+==30013== 3 errors in context 10 of 13:
+==30013== Invalid free() / delete / delete[] / realloc()
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B12D: tokens_destroy (token_list.c:59)
+==30013==    by 0x10B0CB: token_list_push (token_list.c:47)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Address 0x52313f0 is 0 bytes inside a block of size 8 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B0B1: token_list_push (token_list.c:46)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10ABC4: new_lexeme (lexeme.c:22)
+==30013==    by 0x1094CD: space_lex (parser.c:86)
+==30013==    by 0x10953F: lexer (parser.c:103)
+==30013==    by 0x109647: parser (parser.c:133)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== 
+==30013== 11 errors in context 11 of 13:
+==30013== Invalid read of size 1
+==30013==    at 0x10BBF3: ft_strdup (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10D4BC: ft_str_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C080: ft_get_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C190: ft_handle_spec (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C2A4: ft_strprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B5FF: ft_vasprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B4E8: ft_printf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x109DB3: main (shell.c:47)
+==30013==  Address 0x52313f0 is 0 bytes inside a block of size 8 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B0B1: token_list_push (token_list.c:46)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10ABC4: new_lexeme (lexeme.c:22)
+==30013==    by 0x1094CD: space_lex (parser.c:86)
+==30013==    by 0x10953F: lexer (parser.c:103)
+==30013==    by 0x109647: parser (parser.c:133)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== 
+==30013== 14 errors in context 12 of 13:
+==30013== Invalid read of size 1
+==30013==    at 0x10BC09: ft_strdup (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10D4BC: ft_str_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C080: ft_get_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C190: ft_handle_spec (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C2A4: ft_strprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B5FF: ft_vasprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B4E8: ft_printf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x109DB3: main (shell.c:47)
+==30013==  Address 0x52313f0 is 0 bytes inside a block of size 8 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B0B1: token_list_push (token_list.c:46)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10ABC4: new_lexeme (lexeme.c:22)
+==30013==    by 0x1094CD: space_lex (parser.c:86)
+==30013==    by 0x10953F: lexer (parser.c:103)
+==30013==    by 0x109647: parser (parser.c:133)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== 
+==30013== 14 errors in context 13 of 13:
+==30013== Invalid read of size 1
+==30013==    at 0x10BBA7: ft_strdup (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10D4BC: ft_str_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C080: ft_get_conv (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C190: ft_handle_spec (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10C2A4: ft_strprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B5FF: ft_vasprintf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x10B4E8: ft_printf (in /home/nullfinder/CProjects/Minishell/minishell)
+==30013==    by 0x109DB3: main (shell.c:47)
+==30013==  Address 0x52313f0 is 0 bytes inside a block of size 8 free'd
+==30013==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10B324: token_destroy (token.c:70)
+==30013==    by 0x10B0B1: token_list_push (token_list.c:46)
+==30013==    by 0x109691: parser (parser.c:137)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013==  Block was alloc'd at
+==30013==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30013==    by 0x10ABC4: new_lexeme (lexeme.c:22)
+==30013==    by 0x1094CD: space_lex (parser.c:86)
+==30013==    by 0x10953F: lexer (parser.c:103)
+==30013==    by 0x109647: parser (parser.c:133)
+==30013==    by 0x109D3B: main (shell.c:41)
+==30013== 
+==30013== ERROR SUMMARY: 58 errors from 13 contexts (suppressed: 0 from 0)

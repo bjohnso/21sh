@@ -114,6 +114,7 @@ char			*lexer(char *expansion)
 			}
 			return (lexeme);
 		}
+		free(lexeme);
 	}
 	return (NULL);
 }
@@ -123,7 +124,6 @@ t_token_list	*parser(t_shell *shell, char *str)
 	char			*lexeme;
 	int				pos;
 	t_token_list	*token_list;
-	t_token			*temp;
 
 	global_init(str, 0);
 	token_list = new_token_list();
@@ -132,15 +132,10 @@ t_token_list	*parser(t_shell *shell, char *str)
 	{
 		if ((lexeme = lexer(environ_get_value(shell->environ,
 			environ_search(shell->environ, "HOME", 4)))))
-		{
-			temp = generate_token(lexeme, ++pos);
-			if (!temp)
 			{
-				free(temp);
-				break ;
+				ft_printf("%s\n", lexeme);
+				token_list = token_list_push(token_list, generate_token(lexeme, ++pos));
 			}
-			token_list_push(token_list, temp);
-		}
 	}
 	return (token_list);
 }

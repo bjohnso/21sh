@@ -33,6 +33,29 @@ t_shell			*new_shell(void)
 	return (shell);
 }
 
+void			shell_destroy(t_shell *shell)
+{
+	size_t		c;
+
+	c = -1;
+	if (shell->environ)
+	{
+		while (++c < ft_sstrlen(shell->environ))
+			if (shell->environ[c])
+				free(shell->environ[c]);
+		free(shell->environ);
+	}
+	if (shell->dir)
+	{
+		c = -1;
+		while (++c < ft_sstrlen(shell->dir))
+			if (shell->dir[c])
+				free(shell->dir[c]);
+		free(shell->dir);
+	}
+	free(shell);
+}
+
 /*
 **Directory
 */

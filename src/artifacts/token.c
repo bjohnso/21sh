@@ -61,3 +61,14 @@ t_token		*generate_token(char *lexeme, int pos)
 			return (new_token(lexeme, pos, "file"));
 	}
 }
+
+void		token_destroy(t_token *token)
+{
+	if (token)
+	{
+		if (token->lexeme)
+			free(token->lexeme);
+	}
+	free(token);
+	token = NULL;
+}
