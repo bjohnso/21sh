@@ -105,8 +105,6 @@ int				mini_setenv(t_shell *shell, t_agent *agent)
 				else
 					environ_push(shell, agent->files[c]);
 			}
-			else
-				return (-1);
 		}
 	}
 	return (1);
@@ -127,16 +125,12 @@ int				mini_unsetenv(t_shell *shell, t_agent *agent)
 				if ((pos = environ_search(shell->environ, agent->files[c]
 					+ 1, ft_strlen(agent->files[c]) - 1)) != -1)
 					environ_delete(shell, pos);
-				else
-					return (-1);
 			}
 			else
 			{
 				if ((pos = environ_search(shell->environ, agent->files[c]
 					, ft_strlen(agent->files[c]))) != -1)
 					environ_delete(shell, pos);
-				else
-					return (-1);
 			}
 		}
 	}

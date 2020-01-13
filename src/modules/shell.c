@@ -31,84 +31,7 @@ int     main(int argc, char **argv)
 				ft_printf("%s $> ", argv[0]);
 				if ((buffer = input_reader()))
 				{
-					if (ft_strcmp(buffer->str, "exit") == 0)
-					{
-						shell->exit = true;
-						ft_printf("%s\n", "bye");
-					}
-					else
-					{
-						if ((token_list = parser(shell, buffer->str)))
-						{
-							for (size_t i = 0; i < token_list->size; i++)
-							{
-								ft_printf("lexeme : %s\n", (char *)token_list->tokens[i].lexeme);
-							}
-
-							if ((approved_agent = compute_execute(shell, token_list)))
-							{
-								ft_printf("Agent Alias : %s\n", approved_agent->alias);
-								ft_printf("Agent Target : %s\n", approved_agent->target);
-								if(approved_agent->options)
-									ft_printf("Agent Options : %s\n", approved_agent->options);
-								if (approved_agent->files)
-								{
-									for (size_t i = 0; i < ft_sstrlen(approved_agent->files); i++)
-									{
-										ft_printf("Agent Payload : %s\n", approved_agent->files[i]);
-									}
-								}
-								if (approved_agent->exec_args)
-								{
-									for (size_t i = 0; i < ft_sstrlen(approved_agent->exec_args); i++)
-									{
-										ft_printf("Execution Arguments : %s\n", approved_agent->exec_args[i]);
-									}
-								}
-								ft_printf("Agent Command Status : %s\n", approved_agent->command_status  ? "true" : "false");
-								ft_printf("Agent Execution Status : %s\n", approved_agent->execution_status ? "true" : "false");
-								agent_destroy(approved_agent);
-							}
-							token_list_destroy(token_list);
-						}
-					}
-					buffer_destroy(buffer);
-				}
-			}
-			shell_destroy(shell);
-		}
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*if (argc > 0 && argv[0])
-	{
-        while (!shell->exit)
-		{
-            ft_printf("%s $> ", argv[0]);
-            if ((user_input = input_reader()))
-			{
-                if ((token_list = parser(shell, user_input)))
-				{
-					if (token_list->size > 0)
+					if ((token_list = parser(shell, buffer->str)))
 					{
 						if ((approved_agent = compute_execute(shell, token_list)))
 						{
@@ -116,7 +39,7 @@ int     main(int argc, char **argv)
 							{
 								if (execute(shell, approved_agent) == -1)
 									ft_printf("Execution Error... Executor Manager Failed to Dispatch...\n");
-							} 
+							}
 							else
 								ft_printf("%s is a directory\n", approved_agent->alias);
 							if (argv[1] && ft_strcmp(argv[1], "-e") == 0)
@@ -124,9 +47,7 @@ int     main(int argc, char **argv)
 								ft_printf("%s","\n\n----------EXECUTION REPORT----------\n\n");
 								ft_printf("Current Directory : %s\n", shell->dir[0]);
 								for (size_t i = 0; i < token_list->size; i++)
-								{
 									ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i].lexeme, token_list->tokens[i].type);
-								}
 								ft_printf("Agent Alias : %s\n", approved_agent->alias);
 								ft_printf("Agent Target : %s\n", approved_agent->target);
 								if(approved_agent->options)
@@ -134,22 +55,17 @@ int     main(int argc, char **argv)
 								if (approved_agent->files)
 								{
 									for (size_t i = 0; i < ft_sstrlen(approved_agent->files); i++)
-									{
 										ft_printf("Agent Payload : %s\n", approved_agent->files[i]);
-									}
 								}
 								if (approved_agent->exec_args)
 								{
 									for (size_t i = 0; i < ft_sstrlen(approved_agent->exec_args); i++)
-									{
 										ft_printf("Execution Arguments : %s\n", approved_agent->exec_args[i]);
-									}
 								}
 								ft_printf("Agent Command Status : %s\n", approved_agent->command_status  ? "true" : "false");
 								ft_printf("Agent Execution Status : %s\n", approved_agent->execution_status ? "true" : "false");
 							}
-							//agent_destroy(approved_agent);
-							//approved_agent = NULL;
+							agent_destroy(approved_agent);
 						}
 						else
 						{
@@ -162,17 +78,17 @@ int     main(int argc, char **argv)
 							}
 							ft_printf("Error... Agenency Failed to Dispatch an Agent\n");
 						}
+						token_list_destroy(token_list);
 					}
-					//token_list_destroy(token_list);
-                }
-				else
-                    ft_printf("Syntax Error\n");
-                if (argv[1] && ft_strcmp(argv[1], "-e") == 0)
-                    ft_printf("%s", "\n");
-				//free(user_input);
-            }
-        }
-		//shell_destroy(shell);
-        exit(0);
-    }*/
+					else
+						ft_printf("Syntax Error\n");
+                	if (argv[1] && ft_strcmp(argv[1], "-e") == 0)
+                		ft_printf("%s", "\n");
+					buffer_destroy(buffer);
+				}
+			}
+			shell_destroy(shell);
+			exit(0);
+		}
+	}
 }

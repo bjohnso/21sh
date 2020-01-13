@@ -57,6 +57,8 @@ char			*agent_map_target(char **env, char *alias)
 	char		**paths;
 	char		*file;
 
+	file = NULL;
+	paths = NULL;
 	counter = -1;
 	while (++counter < ft_sstrlen((char **)g_aliases) - 1)
 		if (ft_strcmp(g_aliases[counter], alias) == 0)
@@ -74,14 +76,14 @@ char			*agent_map_target(char **env, char *alias)
 					break ;
 			}
 		}
+		if (!file)
+		{
+			free(file);
+			file = NULL;
+		}
 	}
 	if (paths)
 		ft_sstrdel(&paths);
-	if (!file)
-	{
-		free(file);
-		return NULL;
-	}
 	return (file);
 }
 
@@ -103,9 +105,7 @@ void			agent_opt_push(t_agent *agent, char option)
 		counter = -1;
 		temp = (char *)malloc(sizeof(char) * (len + 2));
 		while (++counter < len)
-		{
 			temp[counter] = agent->options[counter];
-		}
 		temp[len] = option;
 		temp[len + 1] = '\0';
 		free(agent->options);

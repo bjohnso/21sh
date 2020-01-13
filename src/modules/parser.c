@@ -132,10 +132,14 @@ t_token_list	*parser(t_shell *shell, char *str)
 	{
 		if ((lexeme = lexer(environ_get_value(shell->environ,
 			environ_search(shell->environ, "HOME", 4)))))
-			{
-				ft_printf("%s\n", lexeme);
+		{
 				token_list = token_list_push(token_list, generate_token(lexeme, ++pos));
-			}
+		}
+		else
+		{
+			token_list_destroy(token_list);
+			return (NULL);
+		}
 	}
 	return (token_list);
 }

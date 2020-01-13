@@ -44,8 +44,10 @@ void			agent_destroy(t_agent *agent)
 				free(agent->exec_args[c]);
 		free(agent->exec_args);
 	}
-	free(agent->alias);
-	free(agent->target);
+	if (agent->alias)
+		free(agent->alias);
+	if (agent->target)
+		free(agent->target);
 	if (agent->options)
 		free(agent->options);
 	free(agent);
