@@ -46,7 +46,7 @@ t_agent			*new_agent(t_shell *shell, t_token *token)
 		if ((agent->target = file_search(shell->dir[0], agent->alias)))
 			return (agent);
 	}
-	free(agent);
+	agent_destroy(agent);
 	return (NULL);
 }
 
@@ -57,7 +57,6 @@ char			*agent_map_target(char **env, char *alias)
 	char		**paths;
 	char		*file;
 
-	file = NULL;
 	counter = -1;
 	while (++counter < ft_sstrlen((char **)g_aliases) - 1)
 		if (ft_strcmp(g_aliases[counter], alias) == 0)
@@ -76,23 +75,14 @@ char			*agent_map_target(char **env, char *alias)
 			}
 		}
 	}
-	//sstr_destroy(paths, counter);
-	return (file);
-}
-
-void			sstr_destroy(char **str, int save)
-{
-	size_t		c;
-
-	c = -1;
-
-	if (str)
+	if (paths)
+		ft_sstrdel(&paths);
+	if (!file)
 	{
-		while (++c < ft_sstrlen(str))
-			if (str[c] && c != (size_t)save)
-				free(str);
+		free(file);
+		return NULL;
 	}
-	free(str);
+	return (file);
 }
 
 void			agent_opt_push(t_agent *agent, char option)

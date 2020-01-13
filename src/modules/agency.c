@@ -18,12 +18,11 @@
 t_agent			*compute_execute(t_shell *shell, t_token_list *t_list)
 {
 	t_agent		*a;
-	size_t		c;
-	size_t		c_alt;
+	//size_t		c;
+	//size_t		c_alt;
 
-	if ((a = new_agent(shell, t_list->tokens)))
-	{
-		agent_opt_push(a, '-');
+	a = new_agent(shell, t_list->tokens);
+		/*agent_opt_push(a, '-');
 		c = 0;
 		while (++c < t_list->size)
 		{
@@ -39,7 +38,6 @@ t_agent			*compute_execute(t_shell *shell, t_token_list *t_list)
 			else
 				break ;
 		}
-		agent_generate_exec_args(a);
-	}
+		agent_generate_exec_args(a);*/
 	return (a);
 }

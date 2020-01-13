@@ -67,7 +67,6 @@ char			*file_search(char *dir, char *alias)
 	file = build_file_path(dir, alias);
 	if (file)
 	{
-		
 		if (access(file, F_OK) == 0)
 			return (file);
 	}

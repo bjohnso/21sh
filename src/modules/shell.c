@@ -20,7 +20,7 @@ int     main(int argc, char **argv)
 	t_shell				*shell;
 	t_buffer			*buffer;
 	t_token_list		*token_list;
-    //t_agent			*approved_agent;
+    t_agent				*approved_agent;
 
 	if (argc > 0 && argv[0])
 	{
@@ -40,11 +40,34 @@ int     main(int argc, char **argv)
 					{
 						if ((token_list = parser(shell, buffer->str)))
 						{
-							ft_printf("token list size : %d\n", token_list->size);
 							for (size_t i = 0; i < token_list->size; i++)
 							{
-								ft_printf("ahoogah\n");
 								ft_printf("lexeme : %s\n", (char *)token_list->tokens[i].lexeme);
+							}
+
+							if ((approved_agent = compute_execute(shell, token_list)))
+							{
+								ft_printf("Agent Alias : %s\n", approved_agent->alias);
+								ft_printf("Agent Target : %s\n", approved_agent->target);
+								if(approved_agent->options)
+									ft_printf("Agent Options : %s\n", approved_agent->options);
+								if (approved_agent->files)
+								{
+									for (size_t i = 0; i < ft_sstrlen(approved_agent->files); i++)
+									{
+										ft_printf("Agent Payload : %s\n", approved_agent->files[i]);
+									}
+								}
+								if (approved_agent->exec_args)
+								{
+									for (size_t i = 0; i < ft_sstrlen(approved_agent->exec_args); i++)
+									{
+										ft_printf("Execution Arguments : %s\n", approved_agent->exec_args[i]);
+									}
+								}
+								ft_printf("Agent Command Status : %s\n", approved_agent->command_status  ? "true" : "false");
+								ft_printf("Agent Execution Status : %s\n", approved_agent->execution_status ? "true" : "false");
+								agent_destroy(approved_agent);
 							}
 							token_list_destroy(token_list);
 						}

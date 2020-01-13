@@ -48,4 +48,5 @@ void			agent_destroy(t_agent *agent)
 	free(agent->target);
 	if (agent->options)
 		free(agent->options);
+	free(agent);
 }
