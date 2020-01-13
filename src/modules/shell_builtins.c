@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:55:46 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/12 18:01:23 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/13 20:46:37 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,7 @@ int				mini_setenv(t_shell *shell, t_agent *agent)
 	size_t		c;
 	size_t		c_alt;
 	int			split;
-	int			pos;
-
+	
 	c = -1;
 	c_alt = -1;
 	if (agent->files)
@@ -98,13 +97,7 @@ int				mini_setenv(t_shell *shell, t_agent *agent)
 				}
 			}
 			if (split != 0)
-			{
-				if ((pos = environ_search(shell->environ, agent->files[c],
-					split)) != -1)
-					environ_replace(shell, agent->files[c], pos);
-				else
-					environ_push(shell, agent->files[c]);
-			}
+				env_add_or_replace(shell, agent->files[c], split);
 		}
 	}
 	return (1);

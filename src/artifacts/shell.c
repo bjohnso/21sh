@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:37:16 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/12 14:27:49 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/13 20:00:39 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char			*build_file_path(char *dir, char *alias)
 			}
 		}
 	}
-	return file;
+	return (file);
 }
 
 size_t			build_file_path_init(char *dir, char *alias)
@@ -110,5 +110,5 @@ size_t			build_file_path_init(char *dir, char *alias)
 	len = ft_strlen(dir) + ft_strlen(alias);
 	if (dir[ft_strlen(dir) - 1] != '/')
 		len++;
-	return len;
+	return (len);
 }

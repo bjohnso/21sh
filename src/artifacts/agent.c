@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:55:10 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/12 15:29:27 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/13 20:47:36 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "ft_sh.h"
-
-static char		*g_aliases[6] =
-{
-	"echo",
-	"cd",
-	"setenv",
-	"unsetenv",
-	"env",
-	"exit"
-};
 
 t_agent			*new_agent(t_shell *shell, t_token *token)
 {
@@ -48,43 +38,6 @@ t_agent			*new_agent(t_shell *shell, t_token *token)
 	}
 	agent_destroy(agent);
 	return (NULL);
-}
-
-char			*agent_map_target(char **env, char *alias)
-{
-	size_t		counter;
-	int			pos;
-	char		**paths;
-	char		*file;
-
-	file = NULL;
-	paths = NULL;
-	counter = -1;
-	while (++counter < ft_sstrlen((char **)g_aliases) - 1)
-		if (ft_strcmp(g_aliases[counter], alias) == 0)
-			return ("builtin");
-	if (alias[0] == '/')
-		return (alias);
-	if ((pos = environ_search(env, "PATH", 4)) != -1)
-	{
-		paths = ft_strsplit(env[pos] + 5, ':');
-		if (paths)
-		{
-			counter = -1;
-			while (++counter < ft_sstrlen(paths)){
-				if ((file = file_search(paths[counter], alias)))
-					break ;
-			}
-		}
-		if (!file)
-		{
-			free(file);
-			file = NULL;
-		}
-	}
-	if (paths)
-		ft_sstrdel(&paths);
-	return (file);
 }
 
 void			agent_opt_push(t_agent *agent, char option)

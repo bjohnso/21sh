@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:55:16 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/12 14:24:55 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/13 20:01:13 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_token_list		*token_list_push(t_token_list *token_list, t_token *token)
 	tokens_destroy(token_list->tokens, token_list->size);
 	token_list->size++;
 	token_list->tokens = tokens;
-	return token_list;
+	return (token_list);
 }
 
 void				tokens_destroy(t_token *tokens, size_t size)
@@ -55,7 +55,7 @@ void				tokens_destroy(t_token *tokens, size_t size)
 	size_t		c;
 
 	c = -1;
-	while(++c < size)
+	while (++c < size)
 		token_destroy(tokens + c);
 	free(tokens);
 }

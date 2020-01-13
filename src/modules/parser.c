@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:55:44 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/12 17:36:30 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/13 20:54:40 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,34 +30,36 @@ int				quote_lex(void)
 	quote_count = 0;
 	len = 0;
 	if (g_cursor[g_pos] == '"')
+		return (quote_lex_alt(len, quote_count));
+	return (0);
+}
+
+int				quote_lex_alt(int len, int quote_count)
+{
+	if (g_pos > 0)
 	{
-		if (g_pos > 0){
-			if (g_cursor[g_pos - 1] == '\\')
+		if (g_cursor[g_pos - 1] == '\\')
+		{
+			g_pos++;
+			return (len);
+		}
+	}
+	quote_count++;
+	g_pos++;
+	while (g_cursor[g_pos])
+	{
+		if (g_cursor[g_pos] == '"')
+		{
+			if (g_cursor[g_pos - 1] != '\\')
 			{
 				g_pos++;
 				return (len);
 			}
 		}
-		quote_count++;
+		len++;
 		g_pos++;
-		while (g_cursor[g_pos])
-		{
-			if (g_cursor[g_pos] == '"')
-			{
-				if (g_cursor [g_pos - 1] != '\\')
-				{
-					g_pos++;
-					return (len);
-				}
-			}
-			len++;
-			g_pos++;
-		}
 	}
-	if (quote_count == 0)
-		return (len);
-	else
-		return (-1);
+	return ((quote_count == 0) ? len : -1);
 }
 
 char			*space_lex(void)
@@ -87,11 +89,10 @@ char			*space_lex(void)
 	return (NULL);
 }
 
-char			*lexer(char *expansion)
+char			*lexer(char *expansion, int exp_pos)
 {
 	char	*lexeme;
 	int		quote_len;
-	int		exp_pos;
 
 	while (g_cursor[g_pos])
 	{
@@ -100,9 +101,7 @@ char			*lexer(char *expansion)
 			return (new_lexeme(g_cursor + g_pos - 1 - quote_len, quote_len));
 		else if (quote_len == -1)
 			return (NULL);
-		lexeme = space_lex();
-		exp_pos = -1;
-		if (lexeme)
+		if ((lexeme = space_lex()))
 		{
 			while (lexeme[++exp_pos])
 			{
@@ -125,16 +124,16 @@ t_token_list	*parser(t_shell *shell, char *str)
 	int				pos;
 	t_token_list	*token_list;
 
-	global_init(str, 0);
+	g_cursor = str;
+	g_pos = 0;
 	token_list = new_token_list();
 	pos = -1;
 	while (g_cursor[g_pos])
 	{
 		if ((lexeme = lexer(environ_get_value(shell->environ,
-			environ_search(shell->environ, "HOME", 4)))))
-		{
-				token_list = token_list_push(token_list, generate_token(lexeme, ++pos));
-		}
+			environ_search(shell->environ, "HOME", 4)), -1)))
+			token_list = token_list_push(token_list,
+					generate_token(lexeme, ++pos));
 		else
 		{
 			token_list_destroy(token_list);
@@ -142,10 +141,4 @@ t_token_list	*parser(t_shell *shell, char *str)
 		}
 	}
 	return (token_list);
-}
-
-void			global_init(char *str, int pos)
-{
-	g_cursor = str;
-	g_pos = pos;
 }

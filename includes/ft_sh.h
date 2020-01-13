@@ -58,11 +58,13 @@ char                *environ_get_value(char **env, int pos);
 void                environ_replace(t_shell *shell, char *pair, int position);
 void                environ_delete(t_shell *shell, int position);
 char                *environ_pair_clone(char *original);
+void				env_add_or_replace(t_shell *shell, char *file, int split);
 
 //Parser
-char                *lexer(char *expansion);
+char                *lexer(char *expansion, int exp_pos);
 t_token_list        *parser(t_shell *shell, char *str);
 int                 quote_lex(void);
+int					quote_lex_alt(int len, int quote_count);
 char                *space_lex(void);
 char                *new_lexeme(char *str, int size);
 void                global_init(char *str, int pos);
@@ -97,6 +99,7 @@ t_agent             *compute_execute(t_shell *shell, t_token_list *token_list);
 //Agent
 t_agent             *new_agent(t_shell *shell, t_token *token);
 char                *agent_map_target(char **env, char *alias);
+char				*agent_map_target_alt(char **env, char *alias, int pos);
 void                agent_opt_push(t_agent *agent, char option);
 void                agent_files_push(t_agent *agent, char *file);
 void                agent_generate_exec_args(t_agent *agent);
