@@ -99,9 +99,6 @@ void			agent_destroy_array(char **str)
 
 void			agent_destroy(t_agent *agent)
 {
-	size_t		c;
-
-	c = -1;
 	agent_destroy_array(agent->files);
 	agent_destroy_array(agent->exec_args);
 	if (agent->alias)
