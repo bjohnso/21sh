@@ -21,21 +21,21 @@ t_agent			*compute_execute(t_shell *shell, t_token_list *t_list)
 	size_t		c;
 	size_t		c_alt;
 
-	if ((a = new_agent(shell, t_list->tokens)))
+	if ((a = new_agent(shell, t_list->tokens[0])))
 	{
 		agent_opt_push(a, '-');
 		c = 0;
 		while (++c < t_list->size)
 		{
-			if (ft_strcmp(t_list->tokens[c].type, "option") == 0)
+			if (ft_strcmp(t_list->tokens[c]->type, "option") == 0)
 			{
 				c_alt = 0;
-				while (++c_alt < ft_strlen(t_list->tokens[c].lexeme) + 1)
-					if (t_list->tokens[c].lexeme[c_alt] != '-')
-						agent_opt_push(a, t_list->tokens[c].lexeme[c_alt]);
+				while (++c_alt < ft_strlen(t_list->tokens[c]->lexeme) + 1)
+					if (t_list->tokens[c]->lexeme[c_alt] != '-')
+						agent_opt_push(a, t_list->tokens[c]->lexeme[c_alt]);
 			}
-			else if (ft_strcmp(t_list->tokens[c].type, "file") == 0)
-				agent_files_push(a, t_list->tokens[c].lexeme);
+			else if (ft_strcmp(t_list->tokens[c]->type, "file") == 0)
+				agent_files_push(a, t_list->tokens[c]->lexeme);
 			else
 				break ;
 		}

@@ -35,28 +35,27 @@ t_token_list		*new_token_list(void)
 
 t_token_list		*token_list_push(t_token_list *token_list, t_token *token)
 {
-	t_token		*tokens;
+	t_token		**tokens;
 	size_t		c;
 
-	tokens = (t_token *)ft_memalloc(sizeof(t_token) * (token_list->size + 1));
+	tokens = (t_token **)ft_memalloc(sizeof(t_token *) * (token_list->size + 1));
 	c = -1;
 	while (++c < token_list->size)
 		tokens[c] = token_list->tokens[c];
-	tokens[c] = *token;
-	token_destroy(token);
-	tokens_destroy(token_list->tokens, token_list->size);
+	tokens[c] = token;
+	free(token_list->tokens);
 	token_list->size++;
 	token_list->tokens = tokens;
 	return (token_list);
 }
 
-void				tokens_destroy(t_token *tokens, size_t size)
+void				tokens_destroy(t_token **tokens, size_t size)
 {
 	size_t		c;
 
 	c = -1;
 	while (++c < size)
-		token_destroy(tokens + c);
+		token_destroy(tokens[c]);
 	free(tokens);
 }
 
@@ -67,9 +66,11 @@ void				token_list_destroy(t_token_list *token_list)
 	counter = -1;
 	while (++counter < token_list->size)
 	{
-		if (token_list->tokens + counter)
-			token_destroy(token_list->tokens + counter);
+		if (token_list->tokens[counter])
+			token_destroy(token_list->tokens[counter]);
 	}
+	if (token_list->tokens)
+		free(token_list->tokens);
 	free(token_list);
 	token_list = NULL;
 }

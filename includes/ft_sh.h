@@ -31,7 +31,7 @@ typedef struct      s_token
 
 typedef struct      s_token_list
 {
-    t_token         *tokens;
+    t_token         **tokens;
     size_t			size;
 }                   t_token_list;
 
@@ -80,7 +80,7 @@ t_token_list        *new_token_list();
 t_token_list		*token_list_push(t_token_list *token_list, t_token *token);
 void                token_list_destroy(t_token_list *token_list);
 void				token_destroy(t_token *token);
-void				tokens_destroy(t_token *token, size_t size);
+void				tokens_destroy(t_token **tokens, size_t size);
 
 //Input Reader
 t_buffer			*input_reader();

@@ -47,7 +47,7 @@ int     main(int argc, char **argv)
 								ft_printf("%s","\n\n----------EXECUTION REPORT----------\n\n");
 								ft_printf("Current Directory : %s\n", shell->dir[0]);
 								for (size_t i = 0; i < token_list->size; i++)
-									ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i].lexeme, token_list->tokens[i].type);
+									ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i]->lexeme, token_list->tokens[i]->type);
 								ft_printf("Agent Alias : %s\n", approved_agent->alias);
 								ft_printf("Agent Target : %s\n", approved_agent->target);
 								if(approved_agent->options)
@@ -73,11 +73,17 @@ int     main(int argc, char **argv)
 							{
 								for (size_t i = 0; i < token_list->size; i++)
 								{
-									ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i].lexeme, token_list->tokens[i].type);
+									ft_printf("Lexeme : %s | Type : %s\n", token_list->tokens[i]->lexeme, token_list->tokens[i]->type);
 								}
 							}
 							ft_printf("Error... Agenency Failed to Dispatch an Agent\n");
 						}
+
+						/*if (ft_strcmp(token_list->tokens[0]->lexeme, "exit") == 0)
+						{
+							shell->exit = true;
+						}*/
+
 						token_list_destroy(token_list);
 					}
 					else
