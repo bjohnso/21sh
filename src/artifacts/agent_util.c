@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 14:36:54 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/13 20:49:41 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/14 15:48:42 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ char			*agent_map_target(char **env, char *alias)
 	counter = -1;
 	while (++counter < ft_sstrlen((char **)g_aliases) - 1)
 		if (ft_strcmp(g_aliases[counter], alias) == 0)
-			return ("builtin");
+			return (ft_strdup("builtin"));
 	if (alias[0] == '/')
-		return (alias);
+		return (ft_strdup(alias));
 	if ((pos = environ_search(env, "PATH", 4)) != -1)
 		file = agent_map_target_alt(env, alias, pos);
 	return (file);
@@ -65,17 +65,36 @@ char			*agent_map_target_alt(char **env, char *alias, int pos)
 		file = NULL;
 	}
 	if (paths)
+	{
 		ft_sstrdel(&paths);
+		paths = NULL;
+	}
 	return (file);
 }
 
-void			agent_clone(t_agent *clone, t_agent *agent)
+t_agent			*agent_clone(t_agent *clone, t_agent *agent)
 {
 	clone->alias = agent->alias;
 	clone->target = agent->target;
 	clone->options = agent->options;
 	clone->files = agent->files;
 	clone->execution_status = agent->execution_status;
+	return (clone);
+}
+
+void			agent_destroy_array(char **str)
+{
+	size_t		c;
+
+	c = -1;
+	if (str)
+	{
+		while (++c < ft_sstrlen(str))
+			if (str[c])
+				free(str[c]);
+		free(str);
+	}
+	str = NULL;
 }
 
 void			agent_destroy(t_agent *agent)
@@ -83,21 +102,8 @@ void			agent_destroy(t_agent *agent)
 	size_t		c;
 
 	c = -1;
-	if (agent->files)
-	{
-		while (++c < ft_sstrlen(agent->files))
-			if (agent->files[c])
-				free(agent->files[c]);
-		free(agent->files);
-	}
-	if (agent->exec_args)
-	{
-		c = -1;
-		while (++c < ft_sstrlen(agent->exec_args))
-			if (agent->exec_args[c])
-				free(agent->exec_args[c]);
-		free(agent->exec_args);
-	}
+	agent_destroy_array(agent->files);
+	agent_destroy_array(agent->exec_args);
 	if (agent->alias)
 		free(agent->alias);
 	if (agent->target)
@@ -105,4 +111,5 @@ void			agent_destroy(t_agent *agent)
 	if (agent->options)
 		free(agent->options);
 	free(agent);
+	agent = NULL;
 }

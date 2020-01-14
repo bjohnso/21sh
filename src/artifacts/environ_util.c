@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 14:06:09 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/13 20:50:41 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/14 15:50:03 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char			*environ_pair_clone(char *original)
 void			env_add_or_replace(t_shell *shell, char *file, int split)
 {
 	int		pos;
-	
+
 	if ((pos = environ_search(shell->environ, file,
 		split)) != -1)
 		environ_replace(shell, file, pos);

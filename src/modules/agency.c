@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:55:38 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/12 15:33:09 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/14 14:14:54 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_agent			*compute_execute(t_shell *shell, t_token_list *t_list)
 
 	if ((a = new_agent(shell, t_list->tokens[0])))
 	{
-		agent_opt_push(a, '-');
+		a = agent_opt_push(a, '-');
 		c = 0;
 		while (++c < t_list->size)
 		{
@@ -32,14 +32,14 @@ t_agent			*compute_execute(t_shell *shell, t_token_list *t_list)
 				c_alt = 0;
 				while (++c_alt < ft_strlen(t_list->tokens[c]->lexeme) + 1)
 					if (t_list->tokens[c]->lexeme[c_alt] != '-')
-						agent_opt_push(a, t_list->tokens[c]->lexeme[c_alt]);
+						a = agent_opt_push(a, t_list->tokens[c]->lexeme[c_alt]);
 			}
 			else if (ft_strcmp(t_list->tokens[c]->type, "file") == 0)
-				agent_files_push(a, t_list->tokens[c]->lexeme);
+				a = agent_files_push(a, t_list->tokens[c]->lexeme);
 			else
 				break ;
 		}
-		agent_generate_exec_args(a);
+		a = agent_generate_exec_args(a);
 	}
 	return (a);
 }

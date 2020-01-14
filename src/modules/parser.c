@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:55:44 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/13 20:54:40 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/14 15:51:35 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,11 +132,8 @@ t_token_list	*parser(t_shell *shell, char *str)
 	{
 		if ((lexeme = lexer(environ_get_value(shell->environ,
 			environ_search(shell->environ, "HOME", 4)), -1)))
-			{
-				
 			token_list = token_list_push(token_list,
 					generate_token(lexeme, ++pos));
-			}
 		else
 		{
 			token_list_destroy(token_list);

@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:37:16 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/13 20:00:39 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/14 15:42:08 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,19 @@
 **Constructor
 */
 
-t_shell			*new_shell(void)
+t_shell			*new_shell(char *alias)
 {
 	extern char		**environ;
 	t_shell			*shell;
 
 	shell = (t_shell *)malloc(sizeof(t_shell));
+	shell->alias = alias;
 	shell->dir = (char**)malloc(sizeof(char *) * 3);
 	shell->dir[2] = NULL;
+	shell->dir[1] = NULL;
 	shell->dir[0] = getcwd(NULL, 0);
 	shell->exit = false;
+	shell->debug = false;
 	shell->environ = environ_init(environ);
 	return (shell);
 }

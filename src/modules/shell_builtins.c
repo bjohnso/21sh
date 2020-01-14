@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:55:46 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/13 20:46:37 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/14 15:50:35 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int				mini_setenv(t_shell *shell, t_agent *agent)
 	size_t		c;
 	size_t		c_alt;
 	int			split;
-	
+
 	c = -1;
 	c_alt = -1;
 	if (agent->files)

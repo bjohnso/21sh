@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:55:12 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/12 14:36:24 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/14 13:20:42 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,5 @@ void			buffer_destroy(t_buffer *buffer)
 	if (buffer->size > 0)
 		free(buffer->str);
 	free(buffer);
+	buffer = NULL;
 }

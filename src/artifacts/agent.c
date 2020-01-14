@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:55:10 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/13 20:47:36 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/14 15:49:26 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_agent			*new_agent(t_shell *shell, t_token *token)
 	agent->alias = ft_strdup(token->lexeme);
 	agent->options = NULL;
 	agent->files = NULL;
+	agent->exec_args = NULL;
 	agent->execution_status = false;
 	if (ft_strcmp(token->type, "command") == 0)
 	{
@@ -40,7 +41,7 @@ t_agent			*new_agent(t_shell *shell, t_token *token)
 	return (NULL);
 }
 
-void			agent_opt_push(t_agent *agent, char option)
+t_agent			*agent_opt_push(t_agent *agent, char option)
 {
 	size_t		len;
 	size_t		counter;
@@ -64,9 +65,10 @@ void			agent_opt_push(t_agent *agent, char option)
 		free(agent->options);
 		agent->options = temp;
 	}
+	return (agent);
 }
 
-void			agent_files_push(t_agent *agent, char *file)
+t_agent			*agent_files_push(t_agent *agent, char *file)
 {
 	size_t		len;
 	size_t		counter;
@@ -75,7 +77,7 @@ void			agent_files_push(t_agent *agent, char *file)
 	if (agent->files == NULL)
 	{
 		agent->files = (char **)malloc(sizeof(char) + 1);
-		agent->files[0] = file;
+		agent->files[0] = ft_strdup(file);
 		agent->files[1] = NULL;
 	}
 	else
@@ -84,17 +86,16 @@ void			agent_files_push(t_agent *agent, char *file)
 		counter = -1;
 		temp = (char **)malloc(sizeof(char *) * (len + 2));
 		while (++counter < len)
-		{
 			temp[counter] = agent->files[counter];
-		}
-		temp[len] = file;
+		temp[len] = ft_strdup(file);
 		temp[len + 1] = NULL;
 		free(agent->files);
 		agent->files = temp;
 	}
+	return (agent);
 }
 
-void			agent_generate_exec_args(t_agent *agent)
+t_agent			*agent_generate_exec_args(t_agent *agent)
 {
 	char		**exec_args;
 	size_t		len;
@@ -111,12 +112,13 @@ void			agent_generate_exec_args(t_agent *agent)
 		counter = 1;
 	len += counter;
 	exec_args = (char **)malloc(sizeof(char *) * (len + 1));
-	exec_args[0] = agent->alias;
+	exec_args[0] = ft_strdup(agent->alias);
 	if (counter == 2)
-		exec_args[1] = agent->options;
+		exec_args[1] = ft_strdup(agent->options);
 	counter_alt = counter - 1;
 	while (++counter_alt < len)
-		exec_args[counter_alt] = agent->files[counter_alt - counter];
+		exec_args[counter_alt] = ft_strdup(agent->files[counter_alt - counter]);
 	exec_args[len] = NULL;
 	agent->exec_args = exec_args;
+	return (agent);
 }

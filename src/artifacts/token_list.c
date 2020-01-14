@@ -6,7 +6,7 @@
 /*   By: Nullfinder <mail.brandonj@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 11:55:16 by Nullfinder        #+#    #+#             */
-/*   Updated: 2020/01/13 20:01:13 by Nullfinder       ###   ########.fr       */
+/*   Updated: 2020/01/14 15:44:47 by Nullfinder       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ t_token_list		*token_list_push(t_token_list *token_list, t_token *token)
 	t_token		**tokens;
 	size_t		c;
 
-	tokens = (t_token **)ft_memalloc(sizeof(t_token *) * (token_list->size + 1));
+	tokens = (t_token **)ft_memalloc(sizeof(t_token *)
+		* (token_list->size + 1));
 	c = -1;
 	while (++c < token_list->size)
 		tokens[c] = token_list->tokens[c];
@@ -57,6 +58,7 @@ void				tokens_destroy(t_token **tokens, size_t size)
 	while (++c < size)
 		token_destroy(tokens[c]);
 	free(tokens);
+	tokens = NULL;
 }
 
 void				token_list_destroy(t_token_list *token_list)
